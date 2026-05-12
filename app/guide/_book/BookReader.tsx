@@ -127,29 +127,29 @@ export function BookReader() {
       {/* 좌상단 미니 링크 */}
       <Link
         href="/"
-        className="absolute left-4 top-4 z-30 inline-flex items-center gap-1.5 rounded-pill border border-border-soft bg-card/85 px-3 py-1.5 text-micro font-bold text-ink-70 shadow-card backdrop-blur transition-all hover:bg-card"
+        className="absolute left-2.5 top-2.5 z-30 inline-flex items-center gap-1 rounded-pill border border-border-soft bg-card/85 px-2.5 py-1 text-[11px] font-bold text-ink-70 shadow-card backdrop-blur transition-all hover:bg-card md:left-4 md:top-4 md:gap-1.5 md:px-3 md:py-1.5 md:text-micro"
       >
-        <ArrowLeft className="h-3.5 w-3.5" />
+        <ArrowLeft className="h-3 w-3 md:h-3.5 md:w-3.5" />
         랜딩으로
       </Link>
 
       {/* 우상단: 페이지 카운터 + TOC */}
-      <div className="absolute right-4 top-4 z-30 flex items-center gap-2">
-        <div className="rounded-pill border border-border-soft bg-card/85 px-3 py-1.5 text-micro font-bold text-ink-70 shadow-card backdrop-blur">
+      <div className="absolute right-2.5 top-2.5 z-30 flex items-center gap-1.5 md:right-4 md:top-4 md:gap-2">
+        <div className="rounded-pill border border-border-soft bg-card/85 px-2.5 py-1 text-[11px] font-bold text-ink-70 shadow-card backdrop-blur md:px-3 md:py-1.5 md:text-micro">
           <span className="text-coral-strong">{index + 1}</span>
           <span className="text-ink-30"> / {total}</span>
         </div>
         <button
           onClick={() => setTocOpen(true)}
-          className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-border-soft bg-card/85 px-3 text-micro font-bold text-ink-70 shadow-card backdrop-blur transition-all hover:bg-card"
+          className="inline-flex h-7 items-center gap-1 rounded-pill border border-border-soft bg-card/85 px-2.5 text-[11px] font-bold text-ink-70 shadow-card backdrop-blur transition-all hover:bg-card md:h-8 md:gap-1.5 md:px-3 md:text-micro"
           aria-label="목차 열기"
         >
-          <List className="h-3.5 w-3.5" />
+          <List className="h-3 w-3 md:h-3.5 md:w-3.5" />
           목차
         </button>
       </div>
 
-      {/* 콘텐츠 영역 (좌우 버튼 공간 확보) */}
+      {/* 콘텐츠 영역 (좌우 버튼 공간 확보 — 모바일은 좁게) */}
       <div className="relative h-full w-full">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
@@ -159,7 +159,7 @@ export function BookReader() {
             initial="enter"
             animate="center"
             exit="exit"
-            className="absolute inset-y-0 inset-x-[72px] md:inset-x-[104px]"
+            className="absolute inset-y-0 inset-x-[48px] sm:inset-x-[68px] md:inset-x-[104px]"
           >
             <PageRenderer page={page} />
           </motion.div>
@@ -171,16 +171,16 @@ export function BookReader() {
         onClick={() => go(-1)}
         disabled={isFirst}
         aria-label="이전 페이지"
-        className="group absolute left-0 top-0 z-20 flex h-full w-[72px] items-center justify-center disabled:cursor-not-allowed md:w-[104px]"
+        className="group absolute left-0 top-0 z-20 flex h-full w-[48px] items-center justify-center disabled:cursor-not-allowed sm:w-[68px] md:w-[104px]"
       >
         <span
-          className={`flex h-14 w-14 items-center justify-center rounded-full border border-border-soft bg-card/90 text-ink-70 shadow-card backdrop-blur transition-all md:h-16 md:w-16 ${
+          className={`flex h-11 w-11 items-center justify-center rounded-full border border-border-soft bg-card/90 text-ink-70 shadow-card backdrop-blur transition-all sm:h-12 sm:w-12 md:h-16 md:w-16 ${
             isFirst
               ? "opacity-30"
               : "group-hover:-translate-x-0.5 group-hover:bg-coral group-hover:text-white group-hover:shadow-coral"
           }`}
         >
-          <ArrowLeft className="h-6 w-6" strokeWidth={2.5} />
+          <ArrowLeft className="h-5 w-5 md:h-6 md:w-6" strokeWidth={2.5} />
         </span>
       </button>
 
@@ -189,16 +189,16 @@ export function BookReader() {
         onClick={() => go(1)}
         disabled={isLast}
         aria-label="다음 페이지"
-        className="group absolute right-0 top-0 z-20 flex h-full w-[72px] items-center justify-center disabled:cursor-not-allowed md:w-[104px]"
+        className="group absolute right-0 top-0 z-20 flex h-full w-[48px] items-center justify-center disabled:cursor-not-allowed sm:w-[68px] md:w-[104px]"
       >
         <span
-          className={`flex h-14 w-14 items-center justify-center rounded-full border border-coral bg-coral text-white shadow-coral transition-all md:h-16 md:w-16 ${
+          className={`flex h-11 w-11 items-center justify-center rounded-full border border-coral bg-coral text-white shadow-coral transition-all sm:h-12 sm:w-12 md:h-16 md:w-16 ${
             isLast
               ? "opacity-30"
               : "group-hover:translate-x-0.5 group-hover:bg-coral-pressed"
           }`}
         >
-          <ArrowRight className="h-6 w-6" strokeWidth={2.5} />
+          <ArrowRight className="h-5 w-5 md:h-6 md:w-6" strokeWidth={2.5} />
         </span>
       </button>
 

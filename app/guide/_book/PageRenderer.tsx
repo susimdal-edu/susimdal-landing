@@ -26,9 +26,10 @@ function fitBox(maxVh: number, maxVw: number, ratio = 1.43): CSSProperties {
   };
 }
 
-const SINGLE_BOX = fitBox(56, 70);
-const PAIR_BOX = fitBox(50, 32); // 두 장 가로 배치 — 각각의 사이즈
-const LIST_BOX = fitBox(40, 50); // list 페이지: 좀 작게
+// 모바일에선 좌우 버튼 영역이 ~48-68px 정도로 좁아져 콘텐츠 가용 너비가 80vw 이상.
+// fitBox vw 를 ~76-80 으로 잡아 모바일 viewport 안에 안전하게 들어가도록.
+const SINGLE_BOX = fitBox(56, 78);
+const LIST_BOX = fitBox(40, 70);
 
 export function PageRenderer({ page }: { page: BookPage }) {
   if (page.layout === "cover" || page.layout === "ending") {
@@ -81,7 +82,7 @@ function CoverEndingLayout({ page }: { page: BookPage }) {
 
 function StandardLayout({ page }: { page: BookPage }) {
   return (
-    <div className="flex h-full w-full flex-col items-center px-3 pb-4 pt-12 md:px-6 md:pb-6 md:pt-14">
+    <div className="flex h-full w-full flex-col items-center px-1 pb-3 pt-9 sm:px-3 sm:pt-12 md:px-6 md:pb-6 md:pt-14">
       {/* 시각 영역 — flex-1, calc 기반 사이즈로 자식이 내부에 정확히 들어감 */}
       <div
         className="flex w-full flex-1 items-center justify-center"
@@ -91,7 +92,7 @@ function StandardLayout({ page }: { page: BookPage }) {
       </div>
 
       {/* 하단 설명 */}
-      <div className="mt-3 w-full max-w-4xl shrink-0 md:mt-5">
+      <div className="mt-2 w-full max-w-4xl shrink-0 sm:mt-3 md:mt-5">
         <DescriptionSlot page={page} />
       </div>
     </div>
@@ -103,10 +104,15 @@ function StandardLayout({ page }: { page: BookPage }) {
 function VisualSlot({ page }: { page: BookPage }) {
   switch (page.layout) {
     case "shots-2":
+      // 모바일: 두 장 세로(flex-col), 데스크탑: 가로(flex-row)
+      // 박스 사이즈도 미디어 쿼리로 따로 — Tailwind arbitrary 로 처리
       return (
-        <div className="flex items-center justify-center gap-3 md:gap-5">
+        <div className="flex flex-col items-center justify-center gap-2 md:flex-row md:gap-5">
           {page.screenshots?.slice(0, 2).map((s) => (
-            <div key={s.src} style={PAIR_BOX}>
+            <div
+              key={s.src}
+              className="[height:min(24vh,calc(78vw/1.43))] [width:min(78vw,calc(24vh*1.43))] md:[height:min(50vh,calc(36vw/1.43))] md:[width:min(36vw,calc(50vh*1.43))]"
+            >
               <HoverPreview
                 src={s.src}
                 alt={s.caption ?? page.matty.alt}
@@ -146,27 +152,29 @@ function VisualSlot({ page }: { page: BookPage }) {
   }
 }
 
-function gridCols(n: number) {
-  if (n <= 3) return Math.max(1, n);
-  return 4;
+function colsClass(n: number) {
+  // 모바일/데스크탑 모두 정적 클래스로 매핑 (Tailwind 빌드 안정성)
+  if (n <= 1) return "grid-cols-1";
+  if (n === 2) return "grid-cols-2";
+  if (n === 3) return "grid-cols-2 md:grid-cols-3";
+  // n=4+ — 모바일 2cols, 데스크탑 4cols (7개면 4×2)
+  return "grid-cols-2 md:grid-cols-4";
 }
 
 function StagesVisual({ page }: { page: BookPage }) {
   const stages = page.stages ?? [];
   const n = stages.length;
-  const cols = gridCols(n);
-  // n=1 일 때 카드가 시각영역을 다 차지하지 않도록 약간 조여줌
+  // n=1 일 때 카드가 시각영역을 다 차지하지 않도록 살짝 조여줌
   const containerStyle =
     n === 1
-      ? { height: "min(54vh, 60vw)", width: "min(72vw, 880px)" }
-      : { height: "min(56vh, 60vw)", width: "min(94vw, 1280px)" };
+      ? { height: "min(54vh, 75vw)", width: "min(78vw, 880px)" }
+      : { height: "min(56vh, 75vw)", width: "min(94vw, 1280px)" };
 
   return (
     <div
-      className="grid gap-3 md:gap-4"
+      className={`grid gap-2 md:gap-4 ${colsClass(n)}`}
       style={{
         ...containerStyle,
-        gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
         gridAutoRows: "1fr",
       }}
     >
