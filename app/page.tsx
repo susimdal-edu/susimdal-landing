@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="min-h-screen">
@@ -8,14 +10,15 @@ export default function Home() {
           <div className="hidden md:flex items-center gap-8 text-sm text-gray-600">
             <a href="#features" className="hover:text-indigo-600 transition-colors">특징</a>
             <a href="#how" className="hover:text-indigo-600 transition-colors">학습 흐름</a>
+            <Link href="/guide" className="hover:text-indigo-600 transition-colors">학생 가이드</Link>
             <a href="#cta" className="hover:text-indigo-600 transition-colors">시작하기</a>
           </div>
-          <a
-            href="#cta"
+          <Link
+            href="/guide"
             className="bg-indigo-600 text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-indigo-700 transition-colors"
           >
-            무료 체험
-          </a>
+            학생 가이드 보기 →
+          </Link>
         </div>
       </nav>
 
@@ -34,12 +37,12 @@ export default function Home() {
             학생 한 명 한 명의 실력에 꼭 맞는 커리큘럼을 경험하세요.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="#cta"
+            <Link
+              href="/guide"
               className="w-full sm:w-auto bg-indigo-600 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
             >
-              지금 무료로 시작하기 →
-            </a>
+              학생 가이드 보러가기 →
+            </Link>
             <a
               href="#features"
               className="w-full sm:w-auto text-gray-600 font-medium px-8 py-4 rounded-2xl border border-gray-200 hover:border-indigo-300 hover:text-indigo-600 transition-colors"

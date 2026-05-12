@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  images: {
+    // Local screenshots are served from /public; no remote loaders needed.
+    unoptimized: false,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
