@@ -53,7 +53,7 @@ export const CHAPTERS = [
   { num: 2, title: "메인 화면", subtitle: "오늘 무엇을 할까요" },
   { num: 3, title: "사이드바", subtitle: "메뉴 한눈에 보기" },
   { num: 4, title: "튼튼 개념 쌓기", subtitle: "공부 전 진단 루트" },
-  { num: 5, title: "학습하기", subtitle: "18단계로 차근차근" },
+  { num: 5, title: "학습하기", subtitle: "5가지 모드로 차근차근" },
   { num: 6, title: "도움이 필요할 때", subtitle: "혼자 끙끙대지 마세요" },
   { num: 7, title: "나의 학습", subtitle: "성장이 보이는 페이지" },
   { num: 8, title: "챌린지", subtitle: "다시 풀어볼 시간" },
