@@ -6,46 +6,32 @@ import { motion } from "framer-motion";
 type Props = {
   src: string;
   alt: string;
-  caption?: string;
   className?: string;
 };
 
-export function TabletFrame({ src, alt, caption, className = "" }: Props) {
+/** 태블릿 가로 프레임 — 부모 컨테이너 크기에 맞춰 채워짐 (aspect 1.43:1). */
+export function TabletFrame({ src, alt, className = "" }: Props) {
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 20, scale: 0.97 }}
+      initial={{ opacity: 0, y: 16, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       className={`relative ${className}`}
     >
-      <div className="tablet-frame">
+      <div className="tablet-frame h-full w-full">
         <span className="tablet-camera" />
         <div className="tablet-screen">
           <Image
             src={src}
             alt={alt}
             fill
-            sizes="(max-width: 768px) 100vw, 720px"
+            sizes="(max-width: 768px) 100vw, 75vw"
             className="object-cover"
             unoptimized
             priority
           />
         </div>
       </div>
-      {caption && (
-        <figcaption className="mt-3 text-center text-caption text-ink-50">
-          {caption}
-        </figcaption>
-      )}
     </motion.figure>
-  );
-}
-
-export function StatusBar() {
-  return (
-    <div className="status-bar">
-      <span>오후 7:21 · 화요일</span>
-      <span>Wi-Fi · 92%</span>
-    </div>
   );
 }

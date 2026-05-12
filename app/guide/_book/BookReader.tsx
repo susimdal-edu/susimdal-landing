@@ -3,28 +3,24 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, BookOpen, Home, List, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, List, X } from "lucide-react";
 import { PageRenderer } from "./PageRenderer";
 import { CHAPTERS, PAGES } from "./pages";
 
 const pageVariants = {
   enter: (dir: number) => ({
     opacity: 0,
-    x: dir > 0 ? 60 : -60,
-    rotateY: dir > 0 ? 6 : -6,
-    transformPerspective: 1200,
+    x: dir > 0 ? 80 : -80,
   }),
   center: {
     opacity: 1,
     x: 0,
-    rotateY: 0,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
   },
   exit: (dir: number) => ({
     opacity: 0,
-    x: dir > 0 ? -60 : 60,
-    rotateY: dir > 0 ? -6 : 6,
-    transition: { duration: 0.35, ease: [0.4, 0, 1, 1] },
+    x: dir > 0 ? -80 : 80,
+    transition: { duration: 0.3, ease: [0.4, 0, 1, 1] },
   }),
 };
 
@@ -79,7 +75,10 @@ export function BookReader() {
   // 키보드 단축키
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (tocOpen) return;
+      if (tocOpen) {
+        if (e.key === "Escape") setTocOpen(false);
+        return;
+      }
       if (e.key === "ArrowRight" || e.key === " ") {
         e.preventDefault();
         go(1);
@@ -90,8 +89,6 @@ export function BookReader() {
         jumpTo(0);
       } else if (e.key === "End") {
         jumpTo(total - 1);
-      } else if (e.key === "Escape") {
-        setTocOpen(false);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -118,152 +115,92 @@ export function BookReader() {
     return map;
   }, [index]);
 
+  const isFirst = index === 0;
+  const isLast = index === total - 1;
+
   return (
-    <div className="relative min-h-screen bg-page">
-      {/* 상단 헤더 */}
-      <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border-soft bg-page/85 px-4 backdrop-blur-md">
-        <Link href="/" className="btn-ghost text-caption">
-          <Home className="h-4 w-4" />
-          <span className="hidden sm:inline">랜딩으로</span>
-        </Link>
-        <div className="flex items-center gap-2 text-caption text-ink-70">
-          <BookOpen className="h-4 w-4 text-coral" />
-          <span className="font-bold text-ink-90">수심달 RED · 학생 가이드</span>
-          <span className="hidden text-ink-50 sm:inline">|</span>
-          <span className="hidden font-semibold text-ink-50 sm:inline">
-            Chapter {page.chapter}. {page.chapterTitle}
-          </span>
+    <div
+      className="relative h-[100svh] w-full overflow-hidden bg-page"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* 좌상단 미니 링크 */}
+      <Link
+        href="/"
+        className="absolute left-4 top-4 z-30 inline-flex items-center gap-1.5 rounded-pill border border-border-soft bg-card/85 px-3 py-1.5 text-micro font-bold text-ink-70 shadow-card backdrop-blur transition-all hover:bg-card"
+      >
+        <ArrowLeft className="h-3.5 w-3.5" />
+        랜딩으로
+      </Link>
+
+      {/* 우상단: 페이지 카운터 + TOC */}
+      <div className="absolute right-4 top-4 z-30 flex items-center gap-2">
+        <div className="rounded-pill border border-border-soft bg-card/85 px-3 py-1.5 text-micro font-bold text-ink-70 shadow-card backdrop-blur">
+          <span className="text-coral-strong">{index + 1}</span>
+          <span className="text-ink-30"> / {total}</span>
         </div>
         <button
           onClick={() => setTocOpen(true)}
-          className="btn-ghost text-caption"
+          className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-border-soft bg-card/85 px-3 text-micro font-bold text-ink-70 shadow-card backdrop-blur transition-all hover:bg-card"
           aria-label="목차 열기"
         >
-          <List className="h-4 w-4" />
-          <span className="hidden sm:inline">목차</span>
+          <List className="h-3.5 w-3.5" />
+          목차
         </button>
-      </header>
-
-      {/* 상단 진행바 */}
-      <div className="sticky top-14 z-20 h-1 w-full bg-border-soft">
-        <motion.div
-          className="h-full bg-gradient-to-r from-coral to-coral-strong"
-          initial={false}
-          animate={{ width: `${((index + 1) / total) * 100}%` }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-        />
       </div>
 
-      {/* 챕터 도트 (데스크탑) */}
-      <div className="sticky top-16 z-20 hidden justify-center px-6 pt-3 md:flex">
-        <div className="flex items-center gap-1 rounded-pill border border-border-soft bg-card px-2 py-1.5 shadow-card">
-          {CHAPTERS.map((c) => {
-            const prog = progressByChapter[c.num];
-            if (!prog) return null;
-            const active = page.chapter === c.num;
-            return (
-              <button
-                key={c.num}
-                onClick={() => jumpTo(prog.first)}
-                className={`group relative flex items-center gap-1.5 rounded-pill px-2.5 py-1 text-micro font-bold transition-all ${
-                  active
-                    ? "bg-coral-soft text-coral-strong"
-                    : "text-ink-50 hover:bg-page"
-                }`}
-                title={`${c.title} — ${c.subtitle}`}
-              >
-                <span>{String(c.num).padStart(2, "0")}</span>
-                <span className="hidden lg:inline">{c.title}</span>
-              </button>
-            );
-          })}
-        </div>
+      {/* 콘텐츠 영역 (좌우 버튼 공간 확보) */}
+      <div className="relative h-full w-full">
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={page.id}
+            custom={direction}
+            variants={pageVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="absolute inset-y-0 inset-x-[72px] md:inset-x-[104px]"
+          >
+            <PageRenderer page={page} />
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* 책 본문 */}
-      <main
-        className="relative mx-auto max-w-6xl px-3 py-6 md:px-6 md:py-10"
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
+      {/* 좌측 이전 버튼 (화면 가장자리) */}
+      <button
+        onClick={() => go(-1)}
+        disabled={isFirst}
+        aria-label="이전 페이지"
+        className="group absolute left-0 top-0 z-20 flex h-full w-[72px] items-center justify-center disabled:cursor-not-allowed md:w-[104px]"
       >
-        <div className="relative">
-          {/* 책 그림자 (페이지 옆) */}
-          <div className="absolute -bottom-3 left-4 right-4 -z-10 h-6 rounded-full bg-ink-90/10 blur-xl" />
-          <div className="paper paper-noise relative overflow-hidden rounded-card border border-border-soft shadow-elevated md:rounded-[20px]">
-            {/* 페이지 영역 */}
-            <div className="relative" style={{ minHeight: "min(78vh, 720px)" }}>
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={page.id}
-                  custom={direction}
-                  variants={pageVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  className="absolute inset-0"
-                >
-                  <PageRenderer page={page} />
-                </motion.div>
-              </AnimatePresence>
-            </div>
+        <span
+          className={`flex h-14 w-14 items-center justify-center rounded-full border border-border-soft bg-card/90 text-ink-70 shadow-card backdrop-blur transition-all md:h-16 md:w-16 ${
+            isFirst
+              ? "opacity-30"
+              : "group-hover:-translate-x-0.5 group-hover:bg-coral group-hover:text-white group-hover:shadow-coral"
+          }`}
+        >
+          <ArrowLeft className="h-6 w-6" strokeWidth={2.5} />
+        </span>
+      </button>
 
-            {/* 하단 페이지 푸터 (페이지 번호, 챕터) */}
-            <div className="flex items-center justify-between border-t border-border-soft bg-subtle/60 px-5 py-3 text-caption text-ink-50">
-              <span>
-                Chapter {page.chapter}. {page.chapterTitle}
-              </span>
-              <span>
-                Page <span className="font-bold text-ink-70">{index + 1}</span> / {total}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* 좌우 컨트롤 (모바일 + 데스크탑) */}
-        <div className="mt-6 flex items-center justify-between gap-3">
-          <button
-            onClick={() => go(-1)}
-            disabled={index === 0}
-            className="btn-secondary"
-            aria-label="이전 페이지"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span>이전</span>
-          </button>
-
-          {/* 페이지 인디케이터 도트 */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5">
-            {PAGES.map((p, i) => (
-              <button
-                key={p.id}
-                onClick={() => jumpTo(i)}
-                aria-label={`${i + 1}페이지로 이동`}
-                className={`h-2 rounded-full transition-all ${
-                  i === index
-                    ? "w-6 bg-coral"
-                    : i < index
-                    ? "w-2 bg-coral/40"
-                    : "w-2 bg-border"
-                }`}
-              />
-            ))}
-          </div>
-
-          <button
-            onClick={() => go(1)}
-            disabled={index === total - 1}
-            className="btn-primary"
-            aria-label="다음 페이지"
-          >
-            <span>{index === total - 1 ? "끝!" : "다음"}</span>
-            <ArrowRight className="h-4 w-4" />
-          </button>
-        </div>
-
-        <p className="mt-3 text-center text-micro text-ink-50">
-          좌우 화살표 키 · 스페이스바 · 모바일은 좌우 스와이프
-        </p>
-      </main>
+      {/* 우측 다음 버튼 */}
+      <button
+        onClick={() => go(1)}
+        disabled={isLast}
+        aria-label="다음 페이지"
+        className="group absolute right-0 top-0 z-20 flex h-full w-[72px] items-center justify-center disabled:cursor-not-allowed md:w-[104px]"
+      >
+        <span
+          className={`flex h-14 w-14 items-center justify-center rounded-full border border-coral bg-coral text-white shadow-coral transition-all md:h-16 md:w-16 ${
+            isLast
+              ? "opacity-30"
+              : "group-hover:translate-x-0.5 group-hover:bg-coral-pressed"
+          }`}
+        >
+          <ArrowRight className="h-6 w-6" strokeWidth={2.5} />
+        </span>
+      </button>
 
       {/* TOC 오버레이 */}
       <AnimatePresence>
@@ -281,7 +218,7 @@ export function BookReader() {
               exit={{ x: 360 }}
               transition={{ type: "spring", damping: 24, stiffness: 220 }}
               onClick={(e) => e.stopPropagation()}
-              className="flex w-full max-w-sm flex-col bg-card shadow-elevated"
+              className="flex h-full w-full max-w-sm flex-col bg-card shadow-elevated"
             >
               <div className="flex items-center justify-between border-b border-border-soft p-4">
                 <h3 className="text-title-s text-ink-90">목차</h3>
@@ -298,7 +235,10 @@ export function BookReader() {
                   const prog = progressByChapter[c.num];
                   if (!prog) return null;
                   return (
-                    <div key={c.num} className="mb-3 rounded-card border border-border-soft bg-card">
+                    <div
+                      key={c.num}
+                      className="mb-3 rounded-card border border-border-soft bg-card"
+                    >
                       <div className="flex items-center justify-between border-b border-border-soft px-4 py-3">
                         <div>
                           <div className="text-micro font-bold text-coral-strong">
@@ -332,7 +272,9 @@ export function BookReader() {
                                 </span>
                                 <span
                                   className={`text-caption ${
-                                    active ? "font-bold text-coral-strong" : "text-ink-70"
+                                    active
+                                      ? "font-bold text-coral-strong"
+                                      : "text-ink-70"
                                   }`}
                                 >
                                   {p.title ?? p.eyebrow ?? "(페이지)"}
