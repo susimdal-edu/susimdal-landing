@@ -17,12 +17,22 @@ const fadeIn = {
   transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.08 },
 };
 
-/** aspect-ratio 충돌을 피하기 위해 height·width 둘 다 calc 로 명시.
- *  viewport 가로/세로 어느 쪽이 더 좁아도 항상 1.43:1 비율 유지. */
+/** 시각 영역 자식 박스 사이즈 — 항상 부모(시각 영역) 안에 fit + 1.43:1 비율 유지.
+ *
+ *  동작 원리:
+ *  - width: 100% 로 시작 → 부모 너비를 채우려 함
+ *  - max-width 가 셋 (vw 한도, vh*ratio 한도, 부모 100%) 중 가장 작은 값으로 잘림
+ *  - aspect-ratio 로 height 자동 계산
+ *  - max-height 도 셋 중 최소로 잘림 → height 줄어들면 aspect 가 width 도 비율로 줄임
+ *
+ *  → 텍스트 영역이 커서 시각 영역 height 가 작아져도 자동으로 비율 유지하며 fit. */
 function fitBox(maxVh: number, maxVw: number, ratio = 1.43): CSSProperties {
   return {
-    height: `min(${maxVh}vh, calc(${maxVw}vw / ${ratio}))`,
-    width: `min(${maxVw}vw, calc(${maxVh}vh * ${ratio}))`,
+    width: "100%",
+    height: "auto",
+    aspectRatio: `${ratio} / 1`,
+    maxWidth: `min(${maxVw}vw, calc(${maxVh}vh * ${ratio}), 100%)`,
+    maxHeight: `min(${maxVh}vh, calc(${maxVw}vw / ${ratio}), 100%)`,
   };
 }
 
@@ -86,17 +96,19 @@ function CoverEndingLayout({ page }: { page: BookPage }) {
 
 function StandardLayout({ page }: { page: BookPage }) {
   return (
-    <div className="flex h-full w-full flex-col items-center px-1 pb-3 pt-9 sm:px-3 sm:pt-12 md:px-6 md:pb-6 md:pt-14">
-      {/* 시각 영역 — flex-1, calc 기반 사이즈로 자식이 내부에 정확히 들어감 */}
+    <div className="flex h-full w-full flex-col items-center overflow-hidden px-1 pb-3 pt-9 sm:px-3 sm:pt-12 md:px-6 md:pb-6 md:pt-14">
+      {/* 시각 영역 — flex-1 가 남는 공간 차지, 자식은 max-h/w 100% 로 자동 fit.
+         텍스트 영역(shrink-0) 이 자기 사이즈를 가져가고 남은 만큼 시각이 줄어듦. */}
       <div
-        className="flex w-full flex-1 items-center justify-center"
+        className="flex w-full flex-1 items-center justify-center overflow-hidden"
         style={{ minHeight: 0 }}
       >
         <VisualSlot page={page} />
       </div>
 
-      {/* 하단 설명 */}
-      <div className="mt-2 w-full max-w-4xl shrink-0 sm:mt-3 md:mt-5">
+      {/* 하단 설명 — shrink-0 이지만 콘텐츠 자체 길이가 너무 길면 시각이 밀리므로
+         max-h 로 텍스트 영역 한도도 두어 화면 밖으로 절대 안 나가게. */}
+      <div className="mt-2 w-full max-w-4xl shrink-0 overflow-hidden sm:mt-3 md:mt-5">
         <DescriptionSlot page={page} />
       </div>
     </div>
@@ -108,14 +120,14 @@ function StandardLayout({ page }: { page: BookPage }) {
 function VisualSlot({ page }: { page: BookPage }) {
   switch (page.layout) {
     case "shots-2":
-      // 모바일: 두 장 세로(flex-col), 데스크탑: 가로(flex-row)
-      // 박스 사이즈도 미디어 쿼리로 따로 — Tailwind arbitrary 로 처리
+      // 모바일 세로 stack / 데스크탑 가로 row.
+      // 각 박스는 width:100% + aspect 1.43 + max-w/h(vh·vw·100% min) 로 부모 안에 자동 fit.
       return (
-        <div className="flex flex-col items-center justify-center gap-2 md:flex-row md:gap-5">
+        <div className="flex max-h-full max-w-full flex-col items-center justify-center gap-2 md:flex-row md:gap-5">
           {page.screenshots?.slice(0, 2).map((s) => (
             <div
               key={s.src}
-              className="[height:min(24vh,calc(78vw/1.43))] [width:min(78vw,calc(24vh*1.43))] md:[height:min(50vh,calc(36vw/1.43))] md:[width:min(36vw,calc(50vh*1.43))]"
+              className="w-full [aspect-ratio:1.43/1] [max-height:min(24vh,calc(78vw/1.43),100%)] [max-width:min(78vw,calc(24vh*1.43),100%)] md:[max-height:min(50vh,calc(36vw/1.43),100%)] md:[max-width:min(36vw,calc(50vh*1.43),100%)]"
             >
               <HoverPreview
                 src={s.src}
@@ -131,7 +143,7 @@ function VisualSlot({ page }: { page: BookPage }) {
 
     case "list":
       return (
-        <div style={LIST_BOX}>
+        <div className="max-h-full max-w-full" style={LIST_BOX}>
           {page.screenshots?.[0] && (
             <TabletFrame
               src={page.screenshots[0].src}
@@ -148,7 +160,7 @@ function VisualSlot({ page }: { page: BookPage }) {
       const src = page.screenshots?.[0]?.src;
       if (!src) return null;
       return (
-        <div style={SINGLE_BOX}>
+        <div className="max-h-full max-w-full" style={SINGLE_BOX}>
           <TabletFrame src={src} alt={page.title ?? page.matty.alt} />
         </div>
       );
@@ -168,11 +180,21 @@ function colsClass(n: number) {
 function StagesVisual({ page }: { page: BookPage }) {
   const stages = page.stages ?? [];
   const n = stages.length;
-  // n=1 일 때 카드가 시각영역을 다 차지하지 않도록 살짝 조여줌
-  const containerStyle =
+  // 부모 시각 영역에 자동 fit — max-* 한도만 두고 width/height 는 100%/auto
+  const containerStyle: CSSProperties =
     n === 1
-      ? { height: "min(54vh, 75vw)", width: "min(78vw, 880px)" }
-      : { height: "min(56vh, 75vw)", width: "min(94vw, 1280px)" };
+      ? {
+          width: "100%",
+          height: "auto",
+          maxWidth: "min(78vw, 880px, 100%)",
+          maxHeight: "min(54vh, 75vw, 100%)",
+        }
+      : {
+          width: "100%",
+          height: "100%",
+          maxWidth: "min(94vw, 1280px, 100%)",
+          maxHeight: "min(56vh, 75vw, 100%)",
+        };
 
   return (
     <div
