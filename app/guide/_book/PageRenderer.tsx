@@ -111,13 +111,13 @@ function VisualSlot({ page }: { page: BookPage }) {
   switch (page.layout) {
     case "shots-2":
       // 모바일 세로 stack / 데스크탑 가로 row.
-      // 모바일은 두 장 합산 height 가 시각영역 안에 들어가야 하므로 max-height 보수적으로(18vh).
+      // ⚠ 컨테이너에 w-full 필수 — 없으면 자식 w-full 가 0으로 평가되는 순환 참조 발생.
       return (
-        <div className="flex max-h-full max-w-full flex-col items-center justify-center gap-2 md:flex-row md:gap-5">
+        <div className="flex w-full flex-col items-center justify-center gap-2 md:flex-row md:gap-5">
           {page.screenshots?.slice(0, 2).map((s) => (
             <div
               key={s.src}
-              className="w-full [aspect-ratio:1.43/1] [max-height:min(18vh,calc(78vw/1.43))] [max-width:min(78vw,calc(18vh*1.43))] md:[max-height:min(50vh,calc(36vw/1.43))] md:[max-width:min(36vw,calc(50vh*1.43))]"
+              className="aspect-[1.43/1] w-full [max-height:min(18vh,calc(78vw/1.43))] [max-width:min(78vw,calc(18vh*1.43))] md:[max-height:min(50vh,calc(36vw/1.43))] md:[max-width:min(36vw,calc(50vh*1.43))]"
             >
               <HoverPreview
                 src={s.src}
