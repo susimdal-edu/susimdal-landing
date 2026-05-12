@@ -92,8 +92,8 @@ function CoverEndingLayout({ page }: { page: BookPage }) {
 function StandardLayout({ page }: { page: BookPage }) {
   return (
     <div className="flex h-full w-full items-center justify-center overflow-hidden px-2 py-4 sm:px-4 sm:py-6 md:px-6 md:py-8">
-      {/* 시각 + 텍스트를 한 흰 카드 안에 묶어 화면 가운데 정렬 */}
-      <div className="flex w-full max-w-3xl flex-col items-stretch gap-3 rounded-card border border-border-soft bg-card p-3 shadow-card sm:gap-4 sm:p-5 md:gap-5 md:p-7">
+      {/* 시각 + 텍스트를 묶어 화면 가운데 정렬. 카드 배경/보더/그림자 없는 투명 컨테이너. */}
+      <div className="flex w-full max-w-3xl flex-col items-stretch gap-3 sm:gap-4 md:gap-5">
         {/* 시각 영역 */}
         <div className="flex w-full items-center justify-center">
           <VisualSlot page={page} />

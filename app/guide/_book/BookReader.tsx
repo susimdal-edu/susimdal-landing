@@ -149,7 +149,7 @@ export function BookReader() {
         </button>
       </div>
 
-      {/* 콘텐츠 영역 (좌우 버튼 공간 확보 — 모바일은 좁게) */}
+      {/* 콘텐츠 영역. 데스크탑은 좌우 버튼 공간 확보, 모바일은 화면 끝까지 사용 */}
       <div className="relative h-full w-full">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
@@ -159,46 +159,62 @@ export function BookReader() {
             initial="enter"
             animate="center"
             exit="exit"
-            className="absolute inset-y-0 inset-x-[48px] sm:inset-x-[68px] md:inset-x-[104px]"
+            className="absolute inset-y-0 inset-x-0 md:inset-x-[104px]"
           >
             <PageRenderer page={page} />
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* 좌측 이전 버튼 (화면 가장자리) */}
+      {/* 모바일 좌측 탭 영역 — 화면 절반, 시각적 단서 없음 (invisible) */}
       <button
         onClick={() => go(-1)}
         disabled={isFirst}
         aria-label="이전 페이지"
-        className="group absolute left-0 top-0 z-20 flex h-full w-[48px] items-center justify-center disabled:cursor-not-allowed sm:w-[68px] md:w-[104px]"
+        className="absolute left-0 top-0 z-10 h-full w-1/2 disabled:cursor-not-allowed md:hidden"
+      />
+
+      {/* 모바일 우측 탭 영역 */}
+      <button
+        onClick={() => go(1)}
+        disabled={isLast}
+        aria-label="다음 페이지"
+        className="absolute right-0 top-0 z-10 h-full w-1/2 disabled:cursor-not-allowed md:hidden"
+      />
+
+      {/* 데스크탑 좌측 이전 버튼 (md+ 만 표시) */}
+      <button
+        onClick={() => go(-1)}
+        disabled={isFirst}
+        aria-label="이전 페이지"
+        className="group absolute left-0 top-0 z-20 hidden h-full w-[104px] items-center justify-center disabled:cursor-not-allowed md:flex"
       >
         <span
-          className={`flex h-11 w-11 items-center justify-center rounded-full border border-border-soft bg-card/90 text-ink-70 shadow-card backdrop-blur transition-all sm:h-12 sm:w-12 md:h-16 md:w-16 ${
+          className={`flex h-16 w-16 items-center justify-center rounded-full border border-border-soft bg-card/90 text-ink-70 shadow-card backdrop-blur transition-all ${
             isFirst
               ? "opacity-30"
               : "group-hover:-translate-x-0.5 group-hover:bg-coral group-hover:text-white group-hover:shadow-coral"
           }`}
         >
-          <ArrowLeft className="h-5 w-5 md:h-6 md:w-6" strokeWidth={2.5} />
+          <ArrowLeft className="h-6 w-6" strokeWidth={2.5} />
         </span>
       </button>
 
-      {/* 우측 다음 버튼 */}
+      {/* 데스크탑 우측 다음 버튼 (md+ 만 표시) */}
       <button
         onClick={() => go(1)}
         disabled={isLast}
         aria-label="다음 페이지"
-        className="group absolute right-0 top-0 z-20 flex h-full w-[48px] items-center justify-center disabled:cursor-not-allowed sm:w-[68px] md:w-[104px]"
+        className="group absolute right-0 top-0 z-20 hidden h-full w-[104px] items-center justify-center disabled:cursor-not-allowed md:flex"
       >
         <span
-          className={`flex h-11 w-11 items-center justify-center rounded-full border border-coral bg-coral text-white shadow-coral transition-all sm:h-12 sm:w-12 md:h-16 md:w-16 ${
+          className={`flex h-16 w-16 items-center justify-center rounded-full border border-coral bg-coral text-white shadow-coral transition-all ${
             isLast
               ? "opacity-30"
               : "group-hover:translate-x-0.5 group-hover:bg-coral-pressed"
           }`}
         >
-          <ArrowRight className="h-5 w-5 md:h-6 md:w-6" strokeWidth={2.5} />
+          <ArrowRight className="h-6 w-6" strokeWidth={2.5} />
         </span>
       </button>
 
