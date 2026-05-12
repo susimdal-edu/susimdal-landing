@@ -8,8 +8,6 @@ import { PageRenderer } from "./PageRenderer";
 import { CHAPTERS, PAGES } from "./pages";
 import { FirstTimeHint } from "./FirstTimeHint";
 
-const HINT_STORAGE_KEY = "susimdal-guide-onboarded";
-
 const pageVariants = {
   enter: (dir: number) => ({
     opacity: 0,
@@ -31,28 +29,13 @@ export function BookReader() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [tocOpen, setTocOpen] = useState(false);
-  const [showHint, setShowHint] = useState(false);
+  // 가이드 첫 진입(컴포넌트 mount) 시마다 hint 표시 — 사용자가 새로고침/재방문할 때마다 보임
+  const [showHint, setShowHint] = useState(true);
   const page = PAGES[index];
   const total = PAGES.length;
 
-  // 첫 진입 시 슬라이드 안내 표시 (한 번 본 사용자는 제외)
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      const seen = window.localStorage.getItem(HINT_STORAGE_KEY);
-      if (!seen) setShowHint(true);
-    } catch {
-      /* localStorage 차단 환경 등 — 무시 */
-    }
-  }, []);
-
   const dismissHint = useCallback(() => {
     setShowHint(false);
-    try {
-      window.localStorage.setItem(HINT_STORAGE_KEY, "1");
-    } catch {
-      /* ignore */
-    }
   }, []);
 
   // hash 동기화

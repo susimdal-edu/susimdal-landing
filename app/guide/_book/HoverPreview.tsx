@@ -35,7 +35,10 @@ export function HoverPreview({ src, alt, children, className = "" }: Props) {
   return (
     <div
       onClick={handleClick}
-      className={`group relative z-20 cursor-zoom-in ${className}`}
+      // ⚠ default position 을 두지 않음. 호출 측 className 으로 'absolute inset-0' 또는
+      //   'relative h-full w-full' 을 받아 position 충돌이 일어나지 않게 함.
+      //   z-20 은 모바일 좌우 탭 영역(z-10) 위에 위치하기 위해 필요 (position 명시 시에만 의미).
+      className={`group z-20 cursor-zoom-in ${className}`}
     >
       {children}
 

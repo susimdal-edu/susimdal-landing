@@ -122,7 +122,7 @@ function VisualSlot({ page }: { page: BookPage }) {
               <HoverPreview
                 src={s.src}
                 alt={s.caption ?? page.matty.alt}
-                className="h-full w-full"
+                className="relative h-full w-full"
               >
                 <TabletFrame src={s.src} alt={s.caption ?? page.matty.alt} />
               </HoverPreview>
@@ -138,7 +138,7 @@ function VisualSlot({ page }: { page: BookPage }) {
             <HoverPreview
               src={page.screenshots[0].src}
               alt={page.title ?? page.matty.alt}
-              className="h-full w-full"
+              className="relative h-full w-full"
             >
               <TabletFrame
                 src={page.screenshots[0].src}
@@ -161,7 +161,7 @@ function VisualSlot({ page }: { page: BookPage }) {
           <HoverPreview
             src={src}
             alt={page.title ?? page.matty.alt}
-            className="h-full w-full"
+            className="relative h-full w-full"
           >
             <TabletFrame src={src} alt={page.title ?? page.matty.alt} />
           </HoverPreview>
