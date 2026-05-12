@@ -41,10 +41,12 @@ export function Callout({ kind, text }: CalloutType) {
   const Icon = s.icon;
   return (
     <div
-      className={`flex items-start gap-2.5 rounded-card border ${s.border} ${s.bg} px-4 py-3`}
+      className={`flex items-start gap-2 rounded-card border ${s.border} ${s.bg} px-3 py-2 sm:gap-2.5 sm:px-4 sm:py-3`}
     >
-      <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${s.text}`} strokeWidth={2.4} />
-      <p className={`text-caption font-semibold leading-relaxed ${s.text}`}>{text}</p>
+      <Icon className={`mt-0.5 h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4 ${s.text}`} strokeWidth={2.4} />
+      <p className={`text-[12px] font-semibold leading-snug sm:text-caption sm:leading-relaxed ${s.text}`}>
+        {text}
+      </p>
     </div>
   );
 }

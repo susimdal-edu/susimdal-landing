@@ -42,35 +42,39 @@ export function PageRenderer({ page }: { page: BookPage }) {
 
 function CoverEndingLayout({ page }: { page: BookPage }) {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center px-6 text-center md:px-12">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-2 px-4 py-4 text-center sm:gap-3 sm:px-6 md:gap-4 md:px-12 md:py-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.85 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-[3vh] flex shrink-0 items-center justify-center"
-        style={{ height: "min(40vh, 360px)", width: "min(40vh, 360px)" }}
+        // 모바일: 28vh · 50vw · 240px 중 최소값 (페이지 안에 안전하게 들어감)
+        // sm+: 좀 더 큼. md+: 기존 360px 한도
+        className="flex shrink-0 items-center justify-center [height:min(28vh,50vw,240px)] [width:min(28vh,50vw,240px)] sm:[height:min(34vh,320px)] sm:[width:min(34vh,320px)] md:[height:min(40vh,360px)] md:[width:min(40vh,360px)]"
       >
         <MattyAvatar src={page.matty.src} alt={page.matty.alt} size="100%" />
       </motion.div>
       {page.eyebrow && (
-        <motion.div {...fadeIn} className="chip-coral mb-3">
+        <motion.div {...fadeIn} className="chip-coral">
           {page.eyebrow}
         </motion.div>
       )}
       {page.title && (
         <motion.h1
           {...fadeIn}
-          className="mb-4 font-bold leading-tight text-ink-90"
-          style={{ fontSize: "clamp(24px, 4.2vh, 44px)", lineHeight: 1.22 }}
+          className="font-bold leading-tight text-ink-90"
+          style={{ fontSize: "clamp(20px, 3.4vh, 44px)", lineHeight: 1.22 }}
         >
           {page.title}
         </motion.h1>
       )}
       <motion.div {...fadeIn} className="max-w-2xl">
-        <MarkdownLite text={page.body} className="leading-relaxed text-ink-70" />
+        <MarkdownLite
+          text={page.body}
+          className="text-[14px] leading-relaxed text-ink-70 sm:text-base"
+        />
       </motion.div>
       {page.callout && (
-        <motion.div {...fadeIn} className="mt-5 w-full max-w-md">
+        <motion.div {...fadeIn} className="w-full max-w-md">
           <Callout {...page.callout} />
         </motion.div>
       )}
