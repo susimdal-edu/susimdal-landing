@@ -7,11 +7,15 @@ type Props = {
   src: string;
   alt: string;
   className?: string;
+  /** 태블릿 스크린 영역 배경색 (기본: #0e0e10 검정). 흰 배경이 필요한 페이지에선 "#fff" 등 전달. */
+  screenBg?: string;
 };
 
-/** 태블릿 가로 프레임 — 부모 컨테이너 크기를 그대로 채워서 렌더링.
- *  부모가 width/height 를 명시했다는 가정. */
-export function TabletFrame({ src, alt, className = "" }: Props) {
+/** 태블릿 가로 프레임 — 부모 컨테이너 크기를 그대로 채워서 렌더링. */
+export function TabletFrame({ src, alt, className = "", screenBg }: Props) {
+  // screenBg 가 지정된 경우(보통 밝은 색) 스피너는 dark variant 로 — 보이지 않게 되는 걸 방지
+  const spinnerVariant = screenBg ? "dark" : "light";
+
   return (
     <motion.figure
       initial={{ opacity: 0, y: 12, scale: 0.97 }}
@@ -20,7 +24,10 @@ export function TabletFrame({ src, alt, className = "" }: Props) {
       className={`tablet-frame relative h-full w-full ${className}`}
     >
       <span className="tablet-camera" />
-      <div className="tablet-screen">
+      <div
+        className="tablet-screen"
+        style={screenBg ? { background: screenBg } : undefined}
+      >
         <LoadingImage
           src={src}
           alt={alt}
@@ -29,7 +36,7 @@ export function TabletFrame({ src, alt, className = "" }: Props) {
           className="object-contain"
           unoptimized
           priority
-          spinnerVariant="light"
+          spinnerVariant={spinnerVariant}
         />
       </div>
     </motion.figure>

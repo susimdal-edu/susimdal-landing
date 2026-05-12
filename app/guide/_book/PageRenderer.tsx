@@ -108,6 +108,9 @@ function StandardLayout({ page }: { page: BookPage }) {
 /* ─────────────────────── Visual slot ─────────────────────── */
 
 function VisualSlot({ page }: { page: BookPage }) {
+  // 페이지 단위 옵션 — 앱스토어 등 원본 이미지 배경이 흰색일 때 frame 안도 흰색으로
+  const screenBg = page.whiteFrame ? "#ffffff" : undefined;
+
   switch (page.layout) {
     case "shots-2":
       // 모바일 세로 stack / 데스크탑 가로 row.
@@ -123,8 +126,13 @@ function VisualSlot({ page }: { page: BookPage }) {
                 src={s.src}
                 alt={s.caption ?? page.matty.alt}
                 className="relative h-full w-full"
+                screenBg={screenBg}
               >
-                <TabletFrame src={s.src} alt={s.caption ?? page.matty.alt} />
+                <TabletFrame
+                  src={s.src}
+                  alt={s.caption ?? page.matty.alt}
+                  screenBg={screenBg}
+                />
               </HoverPreview>
             </div>
           ))}
@@ -139,10 +147,12 @@ function VisualSlot({ page }: { page: BookPage }) {
               src={page.screenshots[0].src}
               alt={page.title ?? page.matty.alt}
               className="relative h-full w-full"
+              screenBg={screenBg}
             >
               <TabletFrame
                 src={page.screenshots[0].src}
                 alt={page.title ?? page.matty.alt}
+                screenBg={screenBg}
               />
             </HoverPreview>
           )}
@@ -162,8 +172,13 @@ function VisualSlot({ page }: { page: BookPage }) {
             src={src}
             alt={page.title ?? page.matty.alt}
             className="relative h-full w-full"
+            screenBg={screenBg}
           >
-            <TabletFrame src={src} alt={page.title ?? page.matty.alt} />
+            <TabletFrame
+              src={src}
+              alt={page.title ?? page.matty.alt}
+              screenBg={screenBg}
+            />
           </HoverPreview>
         </div>
       );

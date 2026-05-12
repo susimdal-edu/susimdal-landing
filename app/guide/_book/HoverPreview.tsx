@@ -11,6 +11,8 @@ type Props = {
   alt: string;
   children: ReactNode;
   className?: string;
+  /** lightbox 안 태블릿 스크린 배경색 (기본: 검정). 페이지 단위로 흰 배경 등 다른 톤이 필요할 때 사용. */
+  screenBg?: string;
 };
 
 /** 작은 스크린샷을 감싸면:
@@ -20,7 +22,15 @@ type Props = {
  *  ⚠ lightbox 는 React Portal 로 document.body 에 mount 됨.
  *     wrapper 의 z-20 이 만드는 stacking context 와 무관하게 viewport 최상위에 표시되어
  *     형제 카드들이 위에 비치는 위계 문제가 발생하지 않음. */
-export function HoverPreview({ src, alt, children, className = "" }: Props) {
+export function HoverPreview({
+  src,
+  alt,
+  children,
+  className = "",
+  screenBg,
+}: Props) {
+  const spinnerVariant = screenBg ? "dark" : "light";
+  const screenStyle = screenBg ? { background: screenBg } : undefined;
   const [openClick, setOpenClick] = useState(false); // 모바일 click 토글
   const [openHover, setOpenHover] = useState(false); // 데스크탑 hover
   const [mounted, setMounted] = useState(false);
@@ -66,7 +76,7 @@ export function HoverPreview({ src, alt, children, className = "" }: Props) {
             >
               <div className="tablet-frame relative h-full w-full">
                 <span className="tablet-camera" />
-                <div className="tablet-screen">
+                <div className="tablet-screen" style={screenStyle}>
                   <LoadingImage
                     src={src}
                     alt={alt}
@@ -74,7 +84,7 @@ export function HoverPreview({ src, alt, children, className = "" }: Props) {
                     sizes="80vw"
                     className="object-contain"
                     unoptimized
-                    spinnerVariant="light"
+                    spinnerVariant={spinnerVariant}
                   />
                 </div>
               </div>

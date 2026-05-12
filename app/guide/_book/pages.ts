@@ -31,6 +31,8 @@ export type BookPage = {
   items?: ListItem[];
   /** 학습 단계 그룹용 */
   stages?: { name: string; tip: string; shots: string[] }[];
+  /** 태블릿 목업 화면 배경을 흰색으로 — 앱스토어 같이 원본 이미지 배경이 흰색일 때 사용 */
+  whiteFrame?: boolean;
 };
 
 const M = {
@@ -93,6 +95,7 @@ export const PAGES: BookPage[] = [
       text: "권장 기기: 갤럭시탭 S6 Lite 이후 모델 + 정품 펜슬 / 아이패드 9 이후 + 호환 펜슬 (정품 펜슬 가능)",
     },
     screenshots: [{ src: "/images/red/02_앱스토어_설치_화면.png", caption: "앱스토어에서 ‘수심달 RED’ 검색" }],
+    whiteFrame: true,
   },
   {
     id: "1-3",
