@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import type { CSSProperties } from "react";
 import { TabletFrame } from "./TabletFrame";
 import { MattyAvatar } from "./MattyAvatar";
 import { Callout } from "./Callout";
@@ -13,6 +14,19 @@ const fadeIn = {
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.08 },
 };
+
+/** aspect-ratio 충돌을 피하기 위해 height·width 둘 다 calc 로 명시.
+ *  viewport 가로/세로 어느 쪽이 더 좁아도 항상 1.43:1 비율 유지. */
+function fitBox(maxVh: number, maxVw: number, ratio = 1.43): CSSProperties {
+  return {
+    height: `min(${maxVh}vh, calc(${maxVw}vw / ${ratio}))`,
+    width: `min(${maxVw}vw, calc(${maxVh}vh * ${ratio}))`,
+  };
+}
+
+const SINGLE_BOX = fitBox(56, 70);
+const PAIR_BOX = fitBox(50, 32); // 두 장 가로 배치 — 각각의 사이즈
+const LIST_BOX = fitBox(40, 50); // list 페이지: 좀 작게
 
 export function PageRenderer({ page }: { page: BookPage }) {
   if (page.layout === "cover" || page.layout === "ending") {
@@ -44,10 +58,7 @@ function CoverEndingLayout({ page }: { page: BookPage }) {
         <motion.h1
           {...fadeIn}
           className="mb-4 font-bold leading-tight text-ink-90"
-          style={{
-            fontSize: "clamp(24px, 4.2vh, 44px)",
-            lineHeight: 1.22,
-          }}
+          style={{ fontSize: "clamp(24px, 4.2vh, 44px)", lineHeight: 1.22 }}
         >
           {page.title}
         </motion.h1>
@@ -69,8 +80,11 @@ function CoverEndingLayout({ page }: { page: BookPage }) {
 function StandardLayout({ page }: { page: BookPage }) {
   return (
     <div className="flex h-full w-full flex-col items-center px-3 pb-4 pt-12 md:px-6 md:pb-6 md:pt-14">
-      {/* 시각 영역 */}
-      <div className="flex w-full flex-1 items-center justify-center" style={{ minHeight: 0 }}>
+      {/* 시각 영역 — flex-1, calc 기반 사이즈로 자식이 내부에 정확히 들어감 */}
+      <div
+        className="flex w-full flex-1 items-center justify-center"
+        style={{ minHeight: 0 }}
+      >
         <VisualSlot page={page} />
       </div>
 
@@ -85,17 +99,12 @@ function StandardLayout({ page }: { page: BookPage }) {
 /* ─────────────────────── Visual slot ─────────────────────── */
 
 function VisualSlot({ page }: { page: BookPage }) {
-  // 시각 영역 자체의 max-height는 부모 flex-1이 결정. aspect-ratio가 height 잡아줌.
   switch (page.layout) {
     case "shots-2":
       return (
-        <div className="flex h-full w-full items-center justify-center gap-4 md:gap-6">
+        <div className="flex items-center justify-center gap-3 md:gap-5">
           {page.screenshots?.slice(0, 2).map((s) => (
-            <div
-              key={s.src}
-              className="h-full max-w-[48%]"
-              style={{ aspectRatio: "1.43 / 1" }}
-            >
+            <div key={s.src} style={PAIR_BOX}>
               <TabletFrame src={s.src} alt={s.caption ?? page.matty.alt} />
             </div>
           ))}
@@ -103,12 +112,8 @@ function VisualSlot({ page }: { page: BookPage }) {
       );
 
     case "list":
-      // 사이드바: 태블릿 1장만 (리스트는 아래 설명으로 이동)
       return (
-        <div
-          className="h-full max-w-[80%]"
-          style={{ aspectRatio: "1.43 / 1" }}
-        >
+        <div style={LIST_BOX}>
           {page.screenshots?.[0] && (
             <TabletFrame
               src={page.screenshots[0].src}
@@ -122,14 +127,10 @@ function VisualSlot({ page }: { page: BookPage }) {
       return <StagesVisual page={page} />;
 
     default: {
-      // shot-right / shot-left / shot-big → 동일: 가운데 1장
       const src = page.screenshots?.[0]?.src;
       if (!src) return null;
       return (
-        <div
-          className="h-full max-w-[80%]"
-          style={{ aspectRatio: "1.43 / 1" }}
-        >
+        <div style={SINGLE_BOX}>
           <TabletFrame src={src} alt={page.title ?? page.matty.alt} />
         </div>
       );
@@ -139,9 +140,11 @@ function VisualSlot({ page }: { page: BookPage }) {
 
 function StagesVisual({ page }: { page: BookPage }) {
   const stages = page.stages ?? [];
-  // 단계 카드를 가로로 나열, 카드 안에 미니 스크린샷
   return (
-    <div className="flex h-full w-full items-stretch justify-center gap-3 overflow-hidden md:gap-4">
+    <div
+      className="flex items-stretch justify-center gap-3 md:gap-4"
+      style={{ height: "min(56vh, 60vw)", width: "min(90vw, 1200px)" }}
+    >
       {stages.map((s, i) => (
         <motion.div
           key={s.name}
@@ -159,12 +162,15 @@ function StagesVisual({ page }: { page: BookPage }) {
               {s.name}
             </span>
           </div>
-          <div className="flex flex-1 flex-col gap-1.5 bg-subtle p-2" style={{ minHeight: 0 }}>
+          <div
+            className="flex flex-1 flex-col gap-1.5 bg-subtle p-2"
+            style={{ minHeight: 0 }}
+          >
             {s.shots.slice(0, 2).map((src) => (
               <div
                 key={src}
-                className="relative w-full overflow-hidden rounded-inner border border-border-soft bg-card"
-                style={{ aspectRatio: "1.43 / 1" }}
+                className="relative w-full flex-1 overflow-hidden rounded-inner border border-border-soft bg-card"
+                style={{ minHeight: 0 }}
               >
                 <Image
                   src={src}
@@ -192,7 +198,7 @@ function DescriptionSlot({ page }: { page: BookPage }) {
     </div>
   );
 
-  // list 페이지: 매티 + 제목/본문 + 항목 그리드
+  // list 페이지: 매티 + 제목 + 항목 그리드
   if (page.layout === "list" && page.items) {
     return (
       <motion.div
@@ -239,8 +245,8 @@ function DescriptionSlot({ page }: { page: BookPage }) {
     );
   }
 
-  // stages 페이지: 매티 + 제목/본문 + 단계명 인라인
-  if (page.layout === "stages" && page.stages) {
+  // stages 페이지: 매티 + 제목 + 본문
+  if (page.layout === "stages") {
     return (
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -250,7 +256,9 @@ function DescriptionSlot({ page }: { page: BookPage }) {
       >
         {mattyBlock}
         <div className="min-w-0 flex-1">
-          {page.eyebrow && <div className="chip-coral mb-1.5">{page.eyebrow}</div>}
+          {page.eyebrow && (
+            <div className="chip-coral mb-1.5">{page.eyebrow}</div>
+          )}
           {page.title && (
             <h2
               className="mb-1.5 font-bold leading-tight text-ink-90"
@@ -259,13 +267,16 @@ function DescriptionSlot({ page }: { page: BookPage }) {
               {page.title}
             </h2>
           )}
-          <MarkdownLite text={page.body} className="text-caption leading-relaxed text-ink-70" />
+          <MarkdownLite
+            text={page.body}
+            className="text-caption leading-relaxed text-ink-70"
+          />
         </div>
       </motion.div>
     );
   }
 
-  // 일반: 매티 + 제목/본문/callout
+  // 일반: 매티 + 제목 + 본문 + callout
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -284,10 +295,7 @@ function DescriptionSlot({ page }: { page: BookPage }) {
             {page.title}
           </h2>
         )}
-        <MarkdownLite
-          text={page.body}
-          className="leading-relaxed text-ink-70"
-        />
+        <MarkdownLite text={page.body} className="leading-relaxed text-ink-70" />
         {page.callout && (
           <div className="mt-2.5">
             <Callout {...page.callout} />
