@@ -230,11 +230,15 @@ function StagesVisual({ page }: { page: BookPage }) {
 /* ─────────────────────── Description slot ─────────────────────── */
 
 function DescriptionSlot({ page }: { page: BookPage }) {
+  // 모바일: 작은 매티(56px) 가 위 / sm+ : 큰 매티(80px) 가 옆
   const mattyBlock = (
-    <div className="shrink-0" style={{ width: "min(80px, 12vh)" }}>
+    <div className="shrink-0 [width:min(56px,8vh)] sm:[width:min(80px,12vh)]">
       <MattyAvatar src={page.matty.src} alt={page.matty.alt} size="100%" bobbing />
     </div>
   );
+
+  // 공통 컨테이너 클래스: 모바일 세로 stack, sm+ 가로 row
+  const wrap = "flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-4 md:gap-5";
 
   // list 페이지: 매티 + 제목 + 항목 그리드
   if (page.layout === "list" && page.items) {
@@ -243,10 +247,10 @@ function DescriptionSlot({ page }: { page: BookPage }) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, delay: 0.1 }}
-        className="flex items-start gap-4 md:gap-5"
+        className={wrap}
       >
         {mattyBlock}
-        <div className="min-w-0 flex-1">
+        <div className="w-full min-w-0 flex-1">
           {page.eyebrow && (
             <div className="chip-coral mb-1.5">{page.eyebrow}</div>
           )}
@@ -290,10 +294,10 @@ function DescriptionSlot({ page }: { page: BookPage }) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, delay: 0.1 }}
-        className="flex items-start gap-4 md:gap-5"
+        className={wrap}
       >
         {mattyBlock}
-        <div className="min-w-0 flex-1">
+        <div className="w-full min-w-0 flex-1">
           {page.eyebrow && (
             <div className="chip-coral mb-1.5">{page.eyebrow}</div>
           )}
@@ -320,10 +324,10 @@ function DescriptionSlot({ page }: { page: BookPage }) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, delay: 0.1 }}
-      className="flex items-start gap-4 md:gap-5"
+      className={wrap}
     >
       {mattyBlock}
-      <div className="min-w-0 flex-1">
+      <div className="w-full min-w-0 flex-1">
         {page.eyebrow && <div className="chip-coral mb-1.5">{page.eyebrow}</div>}
         {page.title && (
           <h2
