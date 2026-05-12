@@ -38,7 +38,7 @@ export default function Home() {
               href="#cta"
               className="w-full sm:w-auto bg-indigo-600 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
             >
-              지금 무료 시작하기 →
+              지금 무료로 시작하기 →
             </a>
             <a
               href="#features"
@@ -99,8 +99,8 @@ export default function Home() {
             {[
               { step: "01", title: "개념 학습", desc: "핵심 개념을 짧고 명확하게 이해합니다." },
               { step: "02", title: "연습 문제", desc: "다양한 유형의 문제로 개념을 다집니다." },
-              { step: "03", title: "심화 도전", desc: "수능·경시 수학 학습 심화까지 실력에 꼭 맞는 커리큘럼을 경험하세요." },
-              { step: "04", title: "수심화 도전", desc: "오답 분석", desc: "AI가 틀린 문제를 분석하고 취약점을 보완합니다." },
+              { step: "03", title: "심화 도전", desc: "수능·경시 수준의 문제로 실력을 끌어올립니다." },
+              { step: "04", title: "오답 분석", desc: "AI가 틀린 문제를 분석하고 취약점을 보완합니다." },
             ].map((item) => (
               <div
                 key={item.step}
