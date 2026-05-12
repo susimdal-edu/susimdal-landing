@@ -8,6 +8,7 @@ import { MattyAvatar } from "./MattyAvatar";
 import { Callout } from "./Callout";
 import { MarkdownLite } from "./MarkdownLite";
 import { HoverPreview } from "./HoverPreview";
+import { LoadingImage } from "./LoadingImage";
 import type { BookPage } from "./pages";
 
 const fadeIn = {
@@ -187,20 +188,22 @@ function StagesVisual({ page }: { page: BookPage }) {
             </span>
           </div>
           {/* 미니 스크린샷 — flex-1 로 카드 남은 공간 채우고 object-contain 으로 비율 유지.
-              HoverPreview 로 감싸서 호버 시 화면 가운데 큰 미리보기로 떠오름. */}
+              HoverPreview 로 감싸서 호버 시 화면 가운데 큰 미리보기로 떠오름.
+              밝은 카드 배경 위에서는 dark variant 스피너 (회색) 사용. */}
           <div
             className="relative flex-1 overflow-hidden bg-subtle"
             style={{ minHeight: 0 }}
           >
             {s.shots[0] && (
               <HoverPreview src={s.shots[0]} alt={s.name} className="absolute inset-0">
-                <Image
+                <LoadingImage
                   src={s.shots[0]}
                   alt={s.name}
                   fill
                   sizes="(max-width: 768px) 50vw, 22vw"
                   className="object-contain p-1.5 transition-transform duration-300 hover:scale-[1.03]"
                   unoptimized
+                  spinnerVariant="dark"
                 />
               </HoverPreview>
             )}

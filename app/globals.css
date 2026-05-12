@@ -89,7 +89,10 @@
   .tablet-frame .tablet-screen {
     width: 100%;
     height: 100%;
-    background: #fff;
+    /* 태블릿 베젤과 톤을 맞춘 검정 배경.
+       로딩 중에는 이 검정 + 연한 회색 스피너로 안정감을 주고,
+       로드 후 비-1.43 비율 이미지의 letterbox 도 자연스럽게 검정 베젤처럼 보이게 함. */
+    background: #0e0e10;
     border-radius: clamp(4px, 0.8vh, 8px);
     overflow: hidden;
     position: relative;

@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
+import { LoadingImage } from "./LoadingImage";
 
 type Props = {
   src: string;
@@ -10,7 +10,7 @@ type Props = {
 };
 
 /** 태블릿 가로 프레임 — 부모 컨테이너 크기를 그대로 채워서 렌더링.
- *  부모가 width/height 를 명시했다는 가정. (aspect-ratio 는 부모에서 잡거나 calc fitBox 로 처리) */
+ *  부모가 width/height 를 명시했다는 가정. */
 export function TabletFrame({ src, alt, className = "" }: Props) {
   return (
     <motion.figure
@@ -21,9 +21,7 @@ export function TabletFrame({ src, alt, className = "" }: Props) {
     >
       <span className="tablet-camera" />
       <div className="tablet-screen">
-        {/* object-contain: 원본 비율이 1.43:1 이 아닌(square·portrait·panoramic) 스크린샷도
-           잘리지 않고 letterbox 안에서 전체가 보이도록. tablet-screen 의 흰 배경이 letterbox 를 자연스럽게 메움. */}
-        <Image
+        <LoadingImage
           src={src}
           alt={alt}
           fill
@@ -31,6 +29,7 @@ export function TabletFrame({ src, alt, className = "" }: Props) {
           className="object-contain"
           unoptimized
           priority
+          spinnerVariant="light"
         />
       </div>
     </motion.figure>

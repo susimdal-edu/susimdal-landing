@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import type { ReactNode } from "react";
+import { LoadingImage } from "./LoadingImage";
 
 type Props = {
   src: string;
@@ -39,13 +39,14 @@ export function HoverPreview({ src, alt, children, className = "" }: Props) {
           <div className="tablet-frame relative h-full w-full">
             <span className="tablet-camera" />
             <div className="tablet-screen">
-              <Image
+              <LoadingImage
                 src={src}
                 alt={alt}
                 fill
                 sizes="80vw"
                 className="object-contain"
                 unoptimized
+                spinnerVariant="light"
               />
             </div>
           </div>
