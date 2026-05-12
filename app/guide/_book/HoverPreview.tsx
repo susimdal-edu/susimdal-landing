@@ -15,8 +15,12 @@ type Props = {
  *  - lightbox 는 pointer-events-none 이라 호버 영역을 가로채지 않음
  *  - 부모를 떠나면 즉시 사라짐 */
 export function HoverPreview({ src, alt, children, className = "" }: Props) {
+  // ⚠ outer 의 default position 을 두지 않음.
+  //   position 은 호출 측의 className 으로 결정 (예: "absolute inset-0", "h-full w-full" 등).
+  //   default 로 relative 를 넣어두면 className 에 absolute 가 들어와도 Tailwind utility 충돌로
+  //   relative 가 적용되어 자식 Image fill 의 부모 사이즈가 0이 되는 버그가 발생함.
   return (
-    <div className={`group relative cursor-zoom-in ${className}`}>
+    <div className={`group cursor-zoom-in ${className}`}>
       {children}
 
       {/* 확대 미리보기 — fixed lightbox */}
