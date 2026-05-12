@@ -2,194 +2,165 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Pretendard 가변 폰트 (한국어 최적화) */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    background: #f4f4f3;
   }
-
   body {
-    @apply bg-white text-ink antialiased;
-    font-family: "Pretendard Variable", Pretendard, ui-sans-serif, system-ui,
-      -apple-system, BlinkMacSystemFont, sans-serif;
+    @apply bg-page text-ink-90 antialiased;
+    font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo",
+      ui-sans-serif, system-ui, sans-serif;
     font-feature-settings: "ss02", "ss03", "ss06";
   }
 
-  /* 깊고 풍부한 스크롤바 */
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #6366f1, #ec4899);
-    border-radius: 999px;
+  ::selection {
+    background: rgba(255, 105, 113, 0.25);
   }
 
-  /* 본문 선택 색상 */
-  ::selection {
-    background: rgba(99, 102, 241, 0.25);
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 999px;
   }
 }
 
 @layer utilities {
+  /* 기본 그라디언트 (랜딩에서만 사용) */
   .gradient-text {
-    @apply bg-gradient-to-r from-indigo-600 via-violet-600 to-rose-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-coral to-coral-strong bg-clip-text text-transparent;
   }
 
-  .gradient-text-cool {
-    @apply bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 bg-clip-text text-transparent;
+  /* 동화책 종이 텍스처 */
+  .paper {
+    background: #fffdf8;
+    background-image:
+      radial-gradient(circle at 50% 0%, rgba(255, 105, 113, 0.05), transparent 60%),
+      radial-gradient(circle at 100% 100%, rgba(255, 213, 102, 0.05), transparent 60%);
   }
 
-  .gradient-text-warm {
-    @apply bg-gradient-to-r from-rose-500 via-fuchsia-500 to-violet-500 bg-clip-text text-transparent;
-  }
-
-  /* 글래스모피즘 카드 */
-  .glass {
-    background: rgba(255, 255, 255, 0.62);
-    backdrop-filter: blur(18px) saturate(160%);
-    -webkit-backdrop-filter: blur(18px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 24px 60px -28px rgba(15, 23, 42, 0.25);
-  }
-
-  .glass-dark {
-    background: rgba(11, 11, 22, 0.55);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-  }
-
-  /* 도트 그리드 배경 */
-  .bg-dot-grid {
-    background-image: radial-gradient(
-      rgba(99, 102, 241, 0.2) 1px,
-      transparent 1px
-    );
-    background-size: 24px 24px;
-  }
-
-  /* 그라디언트 보더 */
-  .gradient-border {
+  .paper-noise {
     position: relative;
-    background-clip: padding-box;
   }
-  .gradient-border::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    padding: 1px;
-    border-radius: inherit;
-    background: linear-gradient(135deg, #6366f1, #ec4899, #f97316);
-    -webkit-mask: linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-
-  /* 형광펜 강조 */
-  .marker-highlight {
-    background: linear-gradient(
-      180deg,
-      transparent 60%,
-      rgba(252, 211, 77, 0.65) 60%
-    );
-    padding: 0 2px;
-  }
-  .marker-rose {
-    background: linear-gradient(
-      180deg,
-      transparent 60%,
-      rgba(251, 113, 133, 0.55) 60%
-    );
-    padding: 0 2px;
-  }
-  .marker-indigo {
-    background: linear-gradient(
-      180deg,
-      transparent 60%,
-      rgba(165, 180, 252, 0.7) 60%
-    );
-    padding: 0 2px;
-  }
-
-  /* 아우로라 배경 */
-  .aurora {
-    background:
-      radial-gradient(800px 600px at 10% 10%, rgba(99, 102, 241, 0.28), transparent 60%),
-      radial-gradient(700px 500px at 90% 20%, rgba(236, 72, 153, 0.22), transparent 60%),
-      radial-gradient(600px 600px at 50% 90%, rgba(56, 189, 248, 0.22), transparent 60%);
-  }
-
-  /* 노이즈 텍스처 */
-  .noise::after {
+  .paper-noise::after {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.04;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>");
     mix-blend-mode: multiply;
+    border-radius: inherit;
   }
 
-  /* 스마트폰 프레임 */
-  .phone-frame {
+  /* 태블릿 가로 프레임 (iPad-style) */
+  .tablet-frame {
     position: relative;
-    border-radius: 36px;
-    background: linear-gradient(180deg, #1f2937, #0f172a);
-    padding: 10px;
+    aspect-ratio: 1.43 / 1;
+    background: #1a1a1d;
+    border-radius: 22px;
+    padding: 14px;
     box-shadow:
-      0 30px 60px -25px rgba(79, 70, 229, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 30px 60px -20px rgba(20, 20, 20, 0.25),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
-  .phone-frame::before {
+  .tablet-frame::before,
+  .tablet-frame::after {
     content: "";
     position: absolute;
-    top: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 50px;
+    border-radius: 999px;
+    background: #0d0d0f;
+  }
+  .tablet-frame::before {
+    left: -3px;
+  }
+  .tablet-frame::after {
+    right: -3px;
+  }
+  .tablet-frame .tablet-screen {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .tablet-frame .tablet-camera {
+    position: absolute;
+    top: 6px;
     left: 50%;
     transform: translateX(-50%);
-    width: 80px;
+    width: 6px;
     height: 6px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.18);
+    border-radius: 50%;
+    background: #0d0d0f;
     z-index: 2;
   }
-  .phone-frame .phone-screen {
-    border-radius: 28px;
-    overflow: hidden;
-    background: #fff;
-    position: relative;
+
+  /* iPadOS 상태바 (장식용) */
+  .status-bar {
+    @apply absolute inset-x-0 top-0 z-10 flex items-center justify-between px-4 py-1.5 text-[10px] font-semibold text-ink-90;
   }
 
-  /* 떠다니는 텍스트 */
-  .text-stroke {
-    -webkit-text-stroke: 1.5px #6366f1;
-    color: transparent;
+  /* 동화책 페이지 카드 */
+  .book-page {
+    @apply relative rounded-card bg-card shadow-card;
   }
 
-  /* 단계 뱃지 */
-  .step-badge {
-    @apply inline-flex h-8 items-center gap-1 rounded-full bg-white/80 px-3 text-xs font-bold tracking-wide;
-    border: 1px solid rgba(99, 102, 241, 0.18);
-    color: #4338ca;
-    box-shadow: 0 8px 24px -12px rgba(79, 70, 229, 0.5);
+  /* Pill 칩 */
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-pill border border-border-soft bg-card px-3 py-1 text-caption font-semibold text-ink-70;
+  }
+  .chip-coral {
+    @apply inline-flex items-center gap-1 rounded-pill bg-coral-soft px-3 py-1 text-caption font-bold text-coral-strong;
+  }
+  .chip-gold {
+    @apply inline-flex items-center gap-1 rounded-pill bg-warn-soft px-3 py-1 text-caption font-bold text-gold-deep;
+  }
+  .chip-good {
+    @apply inline-flex items-center gap-1 rounded-pill bg-good-soft px-3 py-1 text-caption font-bold text-good;
   }
 
-  /* 빛나는 라인 */
-  .shimmer-bar {
+  /* Primary button (coral fill) */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill bg-coral px-6 py-3 text-body-l font-bold text-white shadow-coral transition-all hover:bg-coral-pressed active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-ink-30 disabled:shadow-none;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill border border-border bg-card px-6 py-3 text-body-l font-semibold text-ink-90 transition-all hover:border-ink-70 active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill px-4 py-2 text-body font-semibold text-ink-70 transition-colors hover:bg-page;
+  }
+
+  /* 마커 강조 (코랄 형광펜) */
+  .mark-coral {
     background: linear-gradient(
-      90deg,
-      rgba(99, 102, 241, 0.1),
-      rgba(236, 72, 153, 0.8),
-      rgba(99, 102, 241, 0.1)
+      180deg,
+      transparent 55%,
+      rgba(255, 105, 113, 0.25) 55%
     );
-    background-size: 200% 100%;
-    animation: shimmer 4s linear infinite;
+    padding: 0 2px;
+  }
+  .mark-gold {
+    background: linear-gradient(
+      180deg,
+      transparent 55%,
+      rgba(207, 169, 92, 0.32) 55%
+    );
+    padding: 0 2px;
+  }
+
+  /* 캐릭터 부드러운 그림자 */
+  .char-shadow {
+    filter: drop-shadow(0 12px 16px rgba(20, 20, 20, 0.1));
   }
 }
