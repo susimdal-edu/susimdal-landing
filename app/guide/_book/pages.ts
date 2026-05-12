@@ -90,7 +90,7 @@ export const PAGES: BookPage[] = [
       "태블릿 스토어에서 ‘수심달’을 검색해 **‘수심달 RED’** 앱을 설치해주세요.\n전용 펜슬이 있으면 학습이 훨씬 자연스러워요.",
     callout: {
       kind: "tip",
-      text: "권장 기기: 갤럭시탭 S6 Lite 이후 / 아이패드 9 이후 + 호환 펜슬",
+      text: "권장 기기: 갤럭시탭 S6 Lite 이후 모델 + 정품 펜슬 / 아이패드 9 이후 + 호환 펜슬 (정품 펜슬 가능)",
     },
     screenshots: [{ src: "/images/red/02_앱스토어_설치_화면.png", caption: "앱스토어에서 ‘수심달 RED’ 검색" }],
   },
