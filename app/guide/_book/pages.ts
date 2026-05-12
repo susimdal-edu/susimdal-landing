@@ -544,7 +544,10 @@ export const PAGES: BookPage[] = [
     title: "AI 매티 — 정답 대신 힌트",
     body:
       "정답을 바로 알려주지 않아요.\n대신 “이 조건을 먼저 사용해볼까요?”처럼 스스로 답을 찾도록 힌트를 줘요.",
-    callout: { kind: "warn", text: "진단인 ‘학습 전 체크’에서는 사용할 수 없어요." },
+    callout: {
+      kind: "warn",
+      text: "진단고사·학습 전 체크·테스트 등 AI의 도움 없이 풀어야 하는 단계에서는 사용할 수 없어요.",
+    },
     screenshots: [
       { src: "/images/red/22_학습지원_AI매티.png", caption: "AI 매티 호출" },
       { src: "/images/red/23_학습지원_AI매티힌트.png", caption: "단계적 힌트" },

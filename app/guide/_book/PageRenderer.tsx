@@ -7,6 +7,7 @@ import { TabletFrame } from "./TabletFrame";
 import { MattyAvatar } from "./MattyAvatar";
 import { Callout } from "./Callout";
 import { MarkdownLite } from "./MarkdownLite";
+import { HoverPreview } from "./HoverPreview";
 import type { BookPage } from "./pages";
 
 const fadeIn = {
@@ -105,7 +106,13 @@ function VisualSlot({ page }: { page: BookPage }) {
         <div className="flex items-center justify-center gap-3 md:gap-5">
           {page.screenshots?.slice(0, 2).map((s) => (
             <div key={s.src} style={PAIR_BOX}>
-              <TabletFrame src={s.src} alt={s.caption ?? page.matty.alt} />
+              <HoverPreview
+                src={s.src}
+                alt={s.caption ?? page.matty.alt}
+                className="h-full w-full"
+              >
+                <TabletFrame src={s.src} alt={s.caption ?? page.matty.alt} />
+              </HoverPreview>
             </div>
           ))}
         </div>
@@ -179,20 +186,23 @@ function StagesVisual({ page }: { page: BookPage }) {
               {s.name}
             </span>
           </div>
-          {/* 미니 스크린샷 — flex-1 로 카드 남은 공간 채우고 object-contain 으로 비율 유지 */}
+          {/* 미니 스크린샷 — flex-1 로 카드 남은 공간 채우고 object-contain 으로 비율 유지.
+              HoverPreview 로 감싸서 호버 시 화면 가운데 큰 미리보기로 떠오름. */}
           <div
             className="relative flex-1 overflow-hidden bg-subtle"
             style={{ minHeight: 0 }}
           >
             {s.shots[0] && (
-              <Image
-                src={s.shots[0]}
-                alt={s.name}
-                fill
-                sizes="(max-width: 768px) 50vw, 22vw"
-                className="object-contain p-1.5"
-                unoptimized
-              />
+              <HoverPreview src={s.shots[0]} alt={s.name} className="absolute inset-0">
+                <Image
+                  src={s.shots[0]}
+                  alt={s.name}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 22vw"
+                  className="object-contain p-1.5 transition-transform duration-300 hover:scale-[1.03]"
+                  unoptimized
+                />
+              </HoverPreview>
             )}
           </div>
           {s.tip && (
