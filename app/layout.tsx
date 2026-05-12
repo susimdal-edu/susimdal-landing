@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "수심달 · 학생용 가이드",
     description:
-      "AI 매티와 함께하는 수심달 RED 사용 가이드. 기본·심화 중에서 골라서 시작하세요.",
+      "AI 매티와 함께하는 수심달 APP 사용 가이드. 기본·심화 중에서 골라서 시작하세요.",
     type: "website",
     siteName: "수심달",
   },
