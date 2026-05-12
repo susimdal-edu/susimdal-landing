@@ -1,7 +1,8 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useState, useCallback, type MouseEvent } from "react";
+import type { ReactNode, MouseEvent } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoadingImage } from "./LoadingImage";
 
@@ -12,75 +13,89 @@ type Props = {
   className?: string;
 };
 
-/** 작은 스크린샷 영역을 감싸면:
- *  - 데스크탑(md+): 마우스 호버 시 화면 가운데 lightbox 로 확대 (CSS group-hover)
- *  - 모바일(<md): 탭하면 lightbox 가 열리고, 좌우 탭 영역(페이지 이동)은 가로채지 않음
+/** 작은 스크린샷을 감싸면:
+ *  - 데스크탑(md+): 호버 시 화면 가운데 lightbox 로 확대 (mouseenter/leave state)
+ *  - 모바일(<md): 탭으로 lightbox 열고 닫음. 좌우 탭 영역의 페이지 이동을 stopPropagation 으로 차단
  *
- *  ⚠ 모바일에서 stopPropagation 으로 부모 좌우 탭 영역의 클릭 핸들러에 이벤트가 안 가도록 가드. */
+ *  ⚠ lightbox 는 React Portal 로 document.body 에 mount 됨.
+ *     wrapper 의 z-20 이 만드는 stacking context 와 무관하게 viewport 최상위에 표시되어
+ *     형제 카드들이 위에 비치는 위계 문제가 발생하지 않음. */
 export function HoverPreview({ src, alt, children, className = "" }: Props) {
-  const [openMobile, setOpenMobile] = useState(false);
+  const [openClick, setOpenClick] = useState(false); // 모바일 click 토글
+  const [openHover, setOpenHover] = useState(false); // 데스크탑 hover
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleClick = useCallback((e: MouseEvent) => {
-    // 이미지 위 클릭 → 페이지 이동 방지 + 모바일 lightbox 토글
-    // 데스크탑에서도 stopPropagation 은 무해 (좌우 버튼은 별도 element)
     e.stopPropagation();
-    setOpenMobile((v) => !v);
+    setOpenClick((v) => !v);
   }, []);
 
-  const closeMobile = useCallback((e: MouseEvent) => {
+  const closeAll = useCallback((e: MouseEvent) => {
     e.stopPropagation();
-    setOpenMobile(false);
+    setOpenClick(false);
+    setOpenHover(false);
   }, []);
 
-  return (
-    <div
-      onClick={handleClick}
-      // ⚠ default position 을 두지 않음. 호출 측 className 으로 'absolute inset-0' 또는
-      //   'relative h-full w-full' 을 받아 position 충돌이 일어나지 않게 함.
-      //   z-20 은 모바일 좌우 탭 영역(z-10) 위에 위치하기 위해 필요 (position 명시 시에만 의미).
-      className={`group z-20 cursor-zoom-in ${className}`}
-    >
-      {children}
+  const enterHover = useCallback(() => setOpenHover(true), []);
+  const leaveHover = useCallback(() => setOpenHover(false), []);
 
-      {/* 데스크탑 hover lightbox — md+ 에서만 hover 동작 */}
-      <div
-        className="pointer-events-none invisible fixed inset-0 z-50 hidden items-center justify-center bg-ink-90/45 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:visible group-hover:opacity-100 md:flex"
-        aria-hidden="true"
-      >
-        <div
-          className="relative scale-95 transition-transform duration-200 ease-out group-hover:scale-100"
-          style={{ width: "min(80vw, 1100px)", aspectRatio: "1.43 / 1" }}
-        >
-          <div className="tablet-frame relative h-full w-full">
-            <span className="tablet-camera" />
-            <div className="tablet-screen">
-              <LoadingImage
-                src={src}
-                alt={alt}
-                fill
-                sizes="80vw"
-                className="object-contain"
-                unoptimized
-                spinnerVariant="light"
-              />
-            </div>
-          </div>
-          <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 rounded-pill bg-card/90 px-3 py-1.5 text-caption font-semibold text-ink-70 shadow-card backdrop-blur">
-            마우스를 떼면 닫혀요
-          </div>
-        </div>
-      </div>
-
-      {/* 모바일 click lightbox — 모든 viewport 에서 click 으로 토글되지만 md:hidden 으로 데스크탑은 숨김 */}
+  const lightboxes = (
+    <>
+      {/* 데스크탑 hover lightbox — md+ */}
       <AnimatePresence>
-        {openMobile && (
+        {openHover && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="pointer-events-none fixed inset-0 z-[100] hidden items-center justify-center bg-ink-90/45 backdrop-blur-sm md:flex"
+            aria-hidden="true"
+          >
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="relative"
+              style={{ width: "min(80vw, 1100px)", aspectRatio: "1.43 / 1" }}
+            >
+              <div className="tablet-frame relative h-full w-full">
+                <span className="tablet-camera" />
+                <div className="tablet-screen">
+                  <LoadingImage
+                    src={src}
+                    alt={alt}
+                    fill
+                    sizes="80vw"
+                    className="object-contain"
+                    unoptimized
+                    spinnerVariant="light"
+                  />
+                </div>
+              </div>
+              <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 rounded-pill bg-card/90 px-3 py-1.5 text-caption font-semibold text-ink-70 shadow-card backdrop-blur">
+                마우스를 떼면 닫혀요
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 모바일 click lightbox — md 미만 */}
+      <AnimatePresence>
+        {openClick && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            onClick={closeMobile}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-ink-90/65 px-4 backdrop-blur-sm md:hidden"
+            onClick={closeAll}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-ink-90/65 px-4 backdrop-blur-sm md:hidden"
             role="dialog"
             aria-modal="true"
             aria-label="이미지 확대"
@@ -118,6 +133,18 @@ export function HoverPreview({ src, alt, children, className = "" }: Props) {
           </motion.div>
         )}
       </AnimatePresence>
+    </>
+  );
+
+  return (
+    <div
+      onClick={handleClick}
+      onMouseEnter={enterHover}
+      onMouseLeave={leaveHover}
+      className={`z-20 cursor-zoom-in ${className}`}
+    >
+      {children}
+      {mounted && createPortal(lightboxes, document.body)}
     </div>
   );
 }
