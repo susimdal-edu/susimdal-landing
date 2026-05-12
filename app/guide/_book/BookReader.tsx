@@ -6,6 +6,9 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, List, X } from "lucide-react";
 import { PageRenderer } from "./PageRenderer";
 import { CHAPTERS, PAGES } from "./pages";
+import { FirstTimeHint } from "./FirstTimeHint";
+
+const HINT_STORAGE_KEY = "susimdal-guide-onboarded";
 
 const pageVariants = {
   enter: (dir: number) => ({
@@ -28,8 +31,29 @@ export function BookReader() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [tocOpen, setTocOpen] = useState(false);
+  const [showHint, setShowHint] = useState(false);
   const page = PAGES[index];
   const total = PAGES.length;
+
+  // 첫 진입 시 슬라이드 안내 표시 (한 번 본 사용자는 제외)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const seen = window.localStorage.getItem(HINT_STORAGE_KEY);
+      if (!seen) setShowHint(true);
+    } catch {
+      /* localStorage 차단 환경 등 — 무시 */
+    }
+  }, []);
+
+  const dismissHint = useCallback(() => {
+    setShowHint(false);
+    try {
+      window.localStorage.setItem(HINT_STORAGE_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   // hash 동기화
   useEffect(() => {
@@ -75,6 +99,13 @@ export function BookReader() {
   // 키보드 단축키
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (showHint) {
+        if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          dismissHint();
+        }
+        return;
+      }
       if (tocOpen) {
         if (e.key === "Escape") setTocOpen(false);
         return;
@@ -93,7 +124,7 @@ export function BookReader() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [go, jumpTo, total, tocOpen]);
+  }, [go, jumpTo, total, tocOpen, showHint, dismissHint]);
 
   // 스와이프 (모바일)
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -217,6 +248,11 @@ export function BookReader() {
           <ArrowRight className="h-6 w-6" strokeWidth={2.5} />
         </span>
       </button>
+
+      {/* 첫 진입 슬라이드 제스처 안내 */}
+      <AnimatePresence>
+        {showHint && <FirstTimeHint onClose={dismissHint} />}
+      </AnimatePresence>
 
       {/* TOC 오버레이 */}
       <AnimatePresence>
