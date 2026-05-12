@@ -135,10 +135,16 @@ function VisualSlot({ page }: { page: BookPage }) {
       return (
         <div className="max-h-full max-w-full" style={LIST_BOX}>
           {page.screenshots?.[0] && (
-            <TabletFrame
+            <HoverPreview
               src={page.screenshots[0].src}
               alt={page.title ?? page.matty.alt}
-            />
+              className="h-full w-full"
+            >
+              <TabletFrame
+                src={page.screenshots[0].src}
+                alt={page.title ?? page.matty.alt}
+              />
+            </HoverPreview>
           )}
         </div>
       );
@@ -147,11 +153,18 @@ function VisualSlot({ page }: { page: BookPage }) {
       return <StagesVisual page={page} />;
 
     default: {
+      // shot-right / shot-left / shot-big — 단일 스크린샷도 HoverPreview 로 감싸 호버 확대 지원
       const src = page.screenshots?.[0]?.src;
       if (!src) return null;
       return (
         <div className="max-h-full max-w-full" style={SINGLE_BOX}>
-          <TabletFrame src={src} alt={page.title ?? page.matty.alt} />
+          <HoverPreview
+            src={src}
+            alt={page.title ?? page.matty.alt}
+            className="h-full w-full"
+          >
+            <TabletFrame src={src} alt={page.title ?? page.matty.alt} />
+          </HoverPreview>
         </div>
       );
     }
@@ -170,28 +183,17 @@ function colsClass(n: number) {
 function StagesVisual({ page }: { page: BookPage }) {
   const stages = page.stages ?? [];
   const n = stages.length;
-  // max-* 한도만 vh/vw 기반으로. (% 한도는 flex-1 부모에서 0으로 평가되는 버그)
-  // 카드 안 텍스트 영역과 합산해서 100svh 안에 들어가도록 vh 보수적으로.
-  const containerStyle: CSSProperties =
+  // ⚠ height 를 'auto' 가 아니라 명시 사이즈로 — 자식 카드의 h-full / flex-1 이 정상 작동.
+  //   모바일은 vw 한도 우선, 데스크탑은 vh 한도 우선으로 분기 (arbitrary class).
+  const sizeClass =
     n === 1
-      ? {
-          width: "100%",
-          height: "auto",
-          maxWidth: "min(70vw, 720px)",
-          maxHeight: "min(40vh, 60vw)",
-        }
-      : {
-          width: "100%",
-          height: "auto",
-          maxWidth: "min(90vw, 1200px)",
-          maxHeight: "min(42vh, 60vw)",
-        };
+      ? "w-full [max-width:min(70vw,720px)] [height:min(40vh,60vw)]"
+      : "w-full [max-width:min(90vw,1200px)] [height:min(50vh,80vw)] md:[height:min(42vh,60vw)]";
 
   return (
     <div
-      className={`grid gap-2 md:gap-4 ${colsClass(n)}`}
+      className={`grid gap-2 md:gap-4 ${colsClass(n)} ${sizeClass}`}
       style={{
-        ...containerStyle,
         gridAutoRows: "1fr",
       }}
     >
