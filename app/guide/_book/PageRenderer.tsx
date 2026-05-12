@@ -138,51 +138,68 @@ function VisualSlot({ page }: { page: BookPage }) {
   }
 }
 
+function gridCols(n: number) {
+  if (n <= 3) return Math.max(1, n);
+  return 4;
+}
+
 function StagesVisual({ page }: { page: BookPage }) {
   const stages = page.stages ?? [];
+  const n = stages.length;
+  const cols = gridCols(n);
+  // n=1 일 때 카드가 시각영역을 다 차지하지 않도록 약간 조여줌
+  const containerStyle =
+    n === 1
+      ? { height: "min(54vh, 60vw)", width: "min(72vw, 880px)" }
+      : { height: "min(56vh, 60vw)", width: "min(94vw, 1280px)" };
+
   return (
     <div
-      className="flex items-stretch justify-center gap-3 md:gap-4"
-      style={{ height: "min(56vh, 60vw)", width: "min(90vw, 1200px)" }}
+      className="grid gap-3 md:gap-4"
+      style={{
+        ...containerStyle,
+        gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
+        gridAutoRows: "1fr",
+      }}
     >
       {stages.map((s, i) => (
         <motion.div
           key={s.name}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.08 + i * 0.06 }}
-          className="flex h-full flex-1 flex-col overflow-hidden rounded-card border border-border-soft bg-card shadow-card"
-          style={{ minWidth: 0 }}
+          transition={{ duration: 0.5, delay: 0.05 + i * 0.05 }}
+          className="flex h-full flex-col overflow-hidden rounded-card border border-border-soft bg-card shadow-card"
+          style={{ minWidth: 0, minHeight: 0 }}
         >
-          <div className="flex items-center gap-2 border-b border-border-soft px-3 py-2.5">
+          <div className="flex items-center gap-2 border-b border-border-soft px-3 py-2">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-coral text-[11px] font-black text-white">
               {i + 1}
             </span>
-            <span className="truncate text-caption font-bold text-ink-90">
+            <span className="truncate text-[13px] font-bold text-ink-90">
               {s.name}
             </span>
           </div>
+          {/* 미니 스크린샷 — flex-1 로 카드 남은 공간 채우고 object-contain 으로 비율 유지 */}
           <div
-            className="flex flex-1 flex-col gap-1.5 bg-subtle p-2"
+            className="relative flex-1 overflow-hidden bg-subtle"
             style={{ minHeight: 0 }}
           >
-            {s.shots.slice(0, 2).map((src) => (
-              <div
-                key={src}
-                className="relative w-full flex-1 overflow-hidden rounded-inner border border-border-soft bg-card"
-                style={{ minHeight: 0 }}
-              >
-                <Image
-                  src={src}
-                  alt={s.name}
-                  fill
-                  sizes="(max-width: 768px) 33vw, 18vw"
-                  className="object-cover"
-                  unoptimized
-                />
-              </div>
-            ))}
+            {s.shots[0] && (
+              <Image
+                src={s.shots[0]}
+                alt={s.name}
+                fill
+                sizes="(max-width: 768px) 50vw, 22vw"
+                className="object-contain p-1.5"
+                unoptimized
+              />
+            )}
           </div>
+          {s.tip && (
+            <div className="border-t border-border-soft px-3 py-2 text-[11px] leading-snug text-ink-50">
+              {s.tip}
+            </div>
+          )}
         </motion.div>
       ))}
     </div>
