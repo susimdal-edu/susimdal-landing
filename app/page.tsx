@@ -46,49 +46,12 @@ const CARDS: CardSpec[] = [
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-page">
-      {/* 헤더 */}
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5 md:px-10 md:py-6">
-        <div className="flex items-baseline gap-2">
-          <span className="text-title-m font-bold text-coral-strong">수심달</span>
-          <span className="hidden text-caption text-ink-50 sm:inline">
-            수학에 심장을 달다
-          </span>
-        </div>
-        <a
-          href="mailto:contact@susimdal.com"
-          className="text-caption font-semibold text-ink-70 hover:text-coral-strong"
-        >
-          문의하기
-        </a>
-      </header>
-
-      {/* 본문 */}
-      <section className="flex flex-1 flex-col items-center justify-center px-6 pb-16 md:px-10">
-        <div className="mb-10 text-center md:mb-14">
-          <div className="chip-coral mb-4 inline-flex">학생용 가이드</div>
-          <h1 className="mb-3 text-display font-bold text-ink-90 md:text-[40px]">
-            어떤 가이드를 볼까요?
-          </h1>
-          <p className="text-body-l text-ink-70">
-            처음 사용하는 학생이라면 기본 가이드부터 시작해보세요.
-          </p>
-        </div>
-
-        <div className="grid w-full max-w-4xl grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
-          {CARDS.map((c) => (
-            <GuideCard key={c.title} card={c} />
-          ))}
-        </div>
-      </section>
-
-      {/* 푸터 */}
-      <footer className="border-t border-border-soft bg-card/40">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-1 px-6 py-5 text-caption text-ink-50 md:flex-row md:px-10">
-          <span>© 2026 수심달. All rights reserved.</span>
-          <span>contact@susimdal.com</span>
-        </div>
-      </footer>
+    <main className="flex min-h-screen items-center justify-center bg-page px-6 py-12 md:px-10">
+      <div className="grid w-full max-w-4xl grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
+        {CARDS.map((c) => (
+          <GuideCard key={c.title} card={c} />
+        ))}
+      </div>
     </main>
   );
 }
@@ -104,7 +67,7 @@ function GuideCard({ card }: { card: CardSpec }) {
     >
       {/* 캐릭터 영역 */}
       <div
-        className={`relative flex items-center justify-center px-6 pt-7 pb-3 ${
+        className={`relative flex items-center justify-center px-6 pb-3 pt-7 ${
           card.disabled ? "bg-subtle" : "bg-coral-soft/40"
         }`}
         style={{ minHeight: "min(34vh, 280px)" }}
@@ -169,7 +132,10 @@ function GuideCard({ card }: { card: CardSpec }) {
   }
 
   return (
-    <Link href={card.href} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2 focus-visible:ring-offset-page rounded-card">
+    <Link
+      href={card.href}
+      className="block rounded-card focus:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+    >
       {inner}
     </Link>
   );
