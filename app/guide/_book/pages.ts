@@ -678,16 +678,13 @@ export const PAGES: BookPage[] = [
     chapter: 8,
     chapterTitle: "챌린지",
     pageNumber: 5,
-    layout: "shots-2",
+    layout: "shot-right",
     matty: M.wink,
     eyebrow: "도전 ②",
     title: "테스트 형식으로 진행",
     body:
       "챌린지는 결과를 한 번에 채점받는 **‘테스트’ 형식**으로 진행돼요.\n한 문제씩 풀이 과정을 적어가면서 도전해봐요.",
-    screenshots: [
-      { src: "/images/red/32_챌린지_시작화면1.png" },
-      { src: "/images/red/33_챌린지_시작화면2.png" },
-    ],
+    screenshots: [{ src: "/images/red/33_챌린지_시작화면2.png" }],
   },
   {
     id: "8-6",

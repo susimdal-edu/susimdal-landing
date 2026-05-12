@@ -21,12 +21,14 @@ export function TabletFrame({ src, alt, className = "" }: Props) {
     >
       <span className="tablet-camera" />
       <div className="tablet-screen">
+        {/* object-contain: 원본 비율이 1.43:1 이 아닌(square·portrait·panoramic) 스크린샷도
+           잘리지 않고 letterbox 안에서 전체가 보이도록. tablet-screen 의 흰 배경이 letterbox 를 자연스럽게 메움. */}
         <Image
           src={src}
           alt={alt}
           fill
           sizes="(max-width: 768px) 100vw, 75vw"
-          className="object-cover"
+          className="object-contain"
           unoptimized
           priority
         />
