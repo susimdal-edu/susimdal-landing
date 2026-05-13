@@ -16,6 +16,12 @@ const config: Config = {
           pressed: "#E0505C",
           soft: "#FFEDEE",
         },
+        violet: {
+          DEFAULT: "#7C5CFC",
+          strong: "#4423A8",
+          pressed: "#6849E8",
+          soft: "#EFEAFE",
+        },
         page: "#F4F4F3",
         card: "#FFFFFF",
         subtle: "#F7F7F7",
@@ -78,6 +84,7 @@ const config: Config = {
         card: "0 2px 8px rgba(20,20,20,0.04), 0 1px 2px rgba(20,20,20,0.04)",
         elevated: "0 8px 24px rgba(20,20,20,0.08)",
         coral: "0 8px 24px -8px rgba(255, 105, 113, 0.45)",
+        violet: "0 8px 24px -8px rgba(124, 92, 252, 0.45)",
         tablet: "0 30px 60px -20px rgba(20,20,20,0.18), 0 0 0 1px rgba(20,20,20,0.04)",
       },
       spacing: {

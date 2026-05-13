@@ -126,6 +126,9 @@
   .chip-coral {
     @apply inline-flex items-center gap-1 rounded-pill bg-coral-soft px-3 py-1 text-caption font-bold text-coral-strong;
   }
+  .chip-violet {
+    @apply inline-flex items-center gap-1 rounded-pill bg-violet-soft px-3 py-1 text-caption font-bold text-violet-strong;
+  }
   .chip-gold {
     @apply inline-flex items-center gap-1 rounded-pill bg-warn-soft px-3 py-1 text-caption font-bold text-gold-deep;
   }
@@ -136,6 +139,10 @@
   /* Primary button (coral fill) */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-pill bg-coral px-6 py-3 text-body-l font-bold text-white shadow-coral transition-all hover:bg-coral-pressed active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-ink-30 disabled:shadow-none;
+  }
+  /* Primary button (violet fill) */
+  .btn-primary-violet {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill bg-violet px-6 py-3 text-body-l font-bold text-white shadow-violet transition-all hover:bg-violet-pressed active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-ink-30 disabled:shadow-none;
   }
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 rounded-pill border border-border bg-card px-6 py-3 text-body-l font-semibold text-ink-90 transition-all hover:border-ink-70 active:scale-[0.98];
