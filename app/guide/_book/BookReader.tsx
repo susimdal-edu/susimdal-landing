@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, List, X } from "lucide-react";
 import { PageRenderer } from "./PageRenderer";
-import { CHAPTERS, PAGES } from "./pages";
+import type { BookPage, Chapter } from "./pages";
 import { FirstTimeHint } from "./FirstTimeHint";
 
 const pageVariants = {
@@ -25,7 +25,12 @@ const pageVariants = {
   }),
 };
 
-export function BookReader() {
+type BookReaderProps = {
+  pages: BookPage[];
+  chapters: Chapter[];
+};
+
+export function BookReader({ pages: PAGES, chapters: CHAPTERS }: BookReaderProps) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [tocOpen, setTocOpen] = useState(false);

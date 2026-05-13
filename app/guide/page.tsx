@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BookReader } from "./_book/BookReader";
+import { CHAPTERS, PAGES } from "./_book/pages";
 
 export const metadata: Metadata = {
   title: "수심달 APP · 학생용 가이드",
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function GuidePage() {
-  return <BookReader />;
+  return <BookReader pages={PAGES} chapters={CHAPTERS} />;
 }

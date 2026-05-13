@@ -50,7 +50,13 @@ const M = {
   sleepy: { src: "/characters/matty-sleepy.png", alt: "졸린 매티" },
 };
 
-export const CHAPTERS = [
+export type Chapter = {
+  num: number;
+  title: string;
+  subtitle: string;
+};
+
+export const CHAPTERS: Chapter[] = [
   { num: 1, title: "첫 만남", subtitle: "설치부터 학원 등록까지" },
   { num: 2, title: "메인 화면", subtitle: "오늘 무엇을 할까요" },
   { num: 3, title: "사이드바", subtitle: "메뉴 한눈에 보기" },
@@ -59,7 +65,7 @@ export const CHAPTERS = [
   { num: 6, title: "도움이 필요할 때", subtitle: "혼자 끙끙대지 마세요" },
   { num: 7, title: "나의 학습", subtitle: "성장이 보이는 페이지" },
   { num: 8, title: "챌린지", subtitle: "다시 풀어볼 시간" },
-] as const;
+];
 
 export const PAGES: BookPage[] = [
   // ─────────── Ch 1 ───────────

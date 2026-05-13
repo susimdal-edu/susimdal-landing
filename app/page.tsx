@@ -30,17 +30,17 @@ const CARDS: CardSpec[] = [
     disabled: false,
   },
   {
-    href: null,
+    href: "/guide/advanced",
     character: "/characters/matty-fortune.png",
     characterAlt: "점술 매티",
-    badge: "준비중",
-    badgeKind: "muted",
+    badge: "심화",
+    badgeKind: "coral",
     title: "수심달 학생용 심화가이드",
-    subtitle: "한 단계 더 깊이, 곧 만나요",
+    subtitle: "선배들이 들려주는 수심달의 진짜 가치",
     description:
-      "심화 학습 노하우와 챌린지 활용법, 학습 플래너의 더 깊은 사용법을 매티가 정성껏 준비하고 있어요.",
-    cta: "곧 만나요",
-    disabled: true,
+      "네 명의 앰버서더 선배가 직접 겪은 변화와 학습 노하우. 색깔펜 첨삭부터 습관 신호등까지 매티가 함께 안내해요.",
+    cta: "시작하기",
+    disabled: false,
   },
 ];
 
