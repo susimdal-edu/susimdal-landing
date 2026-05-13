@@ -594,7 +594,7 @@ export const PAGES: BookPage[] = [
     chapterTitle: "미래",
     pageNumber: 3,
     layout: "cover",
-    matty: M.drum,
+    matty: M.fortune,
     eyebrow: "마무리 한마디",
     title: "여러분의 이야기는 이제 시작이에요",
     body:
