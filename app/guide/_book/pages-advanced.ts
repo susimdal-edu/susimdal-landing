@@ -454,7 +454,7 @@ export const PAGES: BookPage[] = [
     chapterTitle: "진짜 변화",
     pageNumber: 1,
     layout: "cover",
-    matty: M.drum,
+    matty: M.honor,
     eyebrow: "Chapter 8",
     title: "점수보다 자신감",
     body:

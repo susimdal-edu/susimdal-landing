@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, List, X } from "lucide-react";
@@ -114,14 +114,23 @@ export function BookReader({ pages: PAGES, chapters: CHAPTERS }: BookReaderProps
     return () => window.removeEventListener("keydown", onKey);
   }, [go, jumpTo, total, tocOpen, showHint, dismissHint]);
 
-  // 스와이프 (모바일)
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const onTouchStart = (e: React.TouchEvent) => setTouchStart(e.touches[0].clientX);
+  // 스와이프 (모바일) — useRef 로 안정성, threshold 작게(40px) 해서 짧은 swipe 도 인식
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    touchStartRef.current = { x: t.clientX, y: t.clientY };
+  };
   const onTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart == null) return;
-    const dx = e.changedTouches[0].clientX - touchStart;
-    if (Math.abs(dx) > 60) go(dx < 0 ? 1 : -1);
-    setTouchStart(null);
+    const start = touchStartRef.current;
+    if (!start) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    touchStartRef.current = null;
+    // 가로 swipe 만 페이지 이동으로 인식 (세로 swipe 또는 거의 안 움직인 tap 은 무시)
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      go(dx < 0 ? 1 : -1);
+    }
   };
 
   const progressByChapter = useMemo(() => {
@@ -142,6 +151,7 @@ export function BookReader({ pages: PAGES, chapters: CHAPTERS }: BookReaderProps
       className="relative h-[100svh] w-full overflow-hidden bg-page"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
+      style={{ touchAction: "pan-y" }}
     >
       {/* 좌상단 미니 링크 */}
       <Link
