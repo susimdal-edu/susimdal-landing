@@ -188,7 +188,7 @@ export const PAGES: BookPage[] = [
     },
     screenshots: [
       {
-        src: "/images/reviews/student-03-서x령/p02_img01_1600x1112.jpeg",
+        src: "/images/reviews/student-01-강x리/p01_img02_1600x2235.jpeg",
         caption: "풀이의 흔적이 남은 화면",
       },
     ],
@@ -232,8 +232,8 @@ export const PAGES: BookPage[] = [
       "한 선배는 **순열과 조합** 단원에서 자기 풀이를 돌아봤어요.\n‘어떻게 설계하느냐에 따라 1분이 될 수도, 1시간이 될 수도 있다’ 는 말씀에\n그동안의 비효율적인 풀이가 비로소 눈에 보이기 시작했대요.",
     screenshots: [
       {
-        src: "/images/reviews/student-01-강x리/p01_img02_1600x2235.jpeg",
-        caption: "순열·조합 개념노트",
+        src: "/images/reviews/student-03-서x령/p02_img01_1600x1112.jpeg",
+        caption: "선배의 학습 화면",
       },
     ],
   },
