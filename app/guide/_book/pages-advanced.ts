@@ -125,8 +125,8 @@ export const PAGES: BookPage[] = [
     },
     screenshots: [
       {
-        src: "/images/reviews/student-01-강x리/p03_img02_1600x1199.png",
-        caption: "변화 후 — 조건의 의미부터 적기",
+        src: "/images/reviews/student-01-강x리/q28_strategy_1600x1180.jpeg",
+        caption: "변화 후 — 조건부터 분석하고 설계",
       },
     ],
   },
