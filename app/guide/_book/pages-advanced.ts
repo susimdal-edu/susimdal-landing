@@ -334,7 +334,7 @@ export const PAGES: BookPage[] = [
       text: "‘해설만 읽고 끝’ 은 노란펜이 아니에요. 차이를 노트에 직접 옮겨 적어야 해요.",
     },
     screenshots: [
-      { src: "/images/landing/pen-correct-02.webp", caption: "노란펜으로 해설과 비교" },
+      { src: "/images/landing/pen-correct-01.webp", caption: "노란펜으로 해설과 비교" },
     ],
   },
   {
