@@ -224,18 +224,12 @@ export const PAGES: BookPage[] = [
     chapter: 4,
     chapterTitle: "심쿵 개념",
     pageNumber: 2,
-    layout: "shot-right",
+    layout: "cover",
     matty: M.fortune,
     eyebrow: "사례 ①",
     title: "순열과 조합 — 설계의 발견",
     body:
       "한 선배는 **순열과 조합** 단원에서 자기 풀이를 돌아봤어요.\n‘어떻게 설계하느냐에 따라 1분이 될 수도, 1시간이 될 수도 있다’ 는 말씀에\n그동안의 비효율적인 풀이가 비로소 눈에 보이기 시작했대요.",
-    screenshots: [
-      {
-        src: "/images/reviews/student-03-서x령/p02_img01_1600x1112.jpeg",
-        caption: "선배의 학습 화면",
-      },
-    ],
   },
   {
     id: "4-3",
