@@ -102,7 +102,10 @@ export const PAGES: BookPage[] = [
       text: "한 선배의 말 — “문제 푸는 기계처럼 풀이 끝만 외워서 답을 썼어요.”",
     },
     screenshots: [
-      { src: "/images/reviews/student-03-서x령/p01_img02_1600x1112.jpeg", caption: "변화 전 풀이" },
+      {
+        src: "/images/reviews/student-01-강x리/p03_img01_1600x1199.png",
+        caption: "변화 전 — 풀이 과정 없이 답만",
+      },
     ],
   },
   {
@@ -121,7 +124,10 @@ export const PAGES: BookPage[] = [
       text: "조건을 정확히 캐치하면 문제는 이미 절반 풀린 거예요.",
     },
     screenshots: [
-      { src: "/images/reviews/student-03-서x령/p02_img02_1600x1112.jpeg", caption: "변화 후 풀이" },
+      {
+        src: "/images/reviews/student-01-강x리/p03_img02_1600x1199.png",
+        caption: "변화 후 — 조건의 의미부터 적기",
+      },
     ],
   },
   {
@@ -162,7 +168,7 @@ export const PAGES: BookPage[] = [
     body:
       "선배들이 공통적으로 반성한 부분이에요.\n**‘이쁘게 정리하기’**, **‘꼼꼼하게 받아적기’** 를 목표로 삼았는데\n사실 그건 ‘이해’ 가 아니라 ‘기록’ 일 뿐이었어요.\n수심달은 그 차이를 명확히 짚어줘요.",
     screenshots: [
-      { src: "/images/reviews/student-02-금x윤/p02_img01_1600x2256.jpeg", caption: "선배의 개념노트" },
+      { src: "/images/reviews/student-01-강x리/p02_img01_1600x2235.jpeg", caption: "선배의 개념노트" },
     ],
   },
   {
@@ -181,7 +187,10 @@ export const PAGES: BookPage[] = [
       text: "‘과정의 흔적’이 남는 노트가 가장 좋은 노트예요.",
     },
     screenshots: [
-      { src: "/images/reviews/student-01-강x리/p03_img01_1600x1199.png", caption: "풀이 흔적이 남은 노트" },
+      {
+        src: "/images/reviews/student-03-서x령/p02_img01_1600x1112.jpeg",
+        caption: "풀이의 흔적이 남은 화면",
+      },
     ],
   },
   {
@@ -222,7 +231,10 @@ export const PAGES: BookPage[] = [
     body:
       "한 선배는 **순열과 조합** 단원에서 자기 풀이를 돌아봤어요.\n‘어떻게 설계하느냐에 따라 1분이 될 수도, 1시간이 될 수도 있다’ 는 말씀에\n그동안의 비효율적인 풀이가 비로소 눈에 보이기 시작했대요.",
     screenshots: [
-      { src: "/images/reviews/student-01-강x리/p01_img02_1600x2235.jpeg" },
+      {
+        src: "/images/reviews/student-01-강x리/p01_img02_1600x2235.jpeg",
+        caption: "순열·조합 개념노트",
+      },
     ],
   },
   {
@@ -237,7 +249,10 @@ export const PAGES: BookPage[] = [
     body:
       "또 다른 선배는 **피타고라스 정리를 17가지 방법으로** 증명했어요.\n‘외우지 않고도 떠오르는 공식’ 의 경험을 처음 했고,\n그 뒤로 모든 수학 개념을 ‘외우지 않고 증명해보자’ 는 자세로 대하게 됐어요.",
     screenshots: [
-      { src: "/images/reviews/student-02-금x윤/p02_img02_1600x2256.jpeg" },
+      {
+        src: "/images/reviews/student-02-금x윤/p02_img02_1600x2256.jpeg",
+        caption: "피타고라스 17증명 노트",
+      },
     ],
   },
   {
@@ -252,7 +267,10 @@ export const PAGES: BookPage[] = [
     body:
       "어떤 선배는 **집합**을 배우며 ‘수학이 진짜 재미있을 수 있구나’ 를 처음 느꼈대요.\n복잡해 보이던 문제도 조건을 분류하고 구조를 만드는 순간\n갑자기 풀리기 시작했다고요.",
     screenshots: [
-      { src: "/images/reviews/student-04-송x윤/p01_img02_1600x1159.jpeg" },
+      {
+        src: "/images/reviews/student-04-송x윤/p01_img02_1600x1159.jpeg",
+        caption: "집합 단원 학습 인증",
+      },
     ],
   },
   {
@@ -458,7 +476,10 @@ export const PAGES: BookPage[] = [
       text: "수심달의 목표는 점수가 아니라 사고력이에요.",
     },
     screenshots: [
-      { src: "/images/reviews/student-04-송x윤/p02_img01_1600x1129.jpeg" },
+      {
+        src: "/images/reviews/student-04-송x윤/p01_img03_1600x1129.jpeg",
+        caption: "선배의 학습 인증",
+      },
     ],
   },
   {
@@ -499,7 +520,10 @@ export const PAGES: BookPage[] = [
     body:
       "‘오늘 열심히 한다’ 같은 두루뭉술한 목표 대신\n시간 단위로 ‘몇 시 무엇을 한다’ 를 적어요.\n끝낸 것에 체크를 하면 성취감도 올라가고\n다음 목표를 어떻게 잡을지 감이 생겨요.",
     screenshots: [
-      { src: "/images/reviews/student-03-서x령/p04_img01_1600x1065.jpeg", caption: "시간표 식 학습 목표" },
+      {
+        src: "/images/reviews/student-03-서x령/p05_img01_804x1129.jpeg",
+        caption: "선배의 학습 기록 노트",
+      },
     ],
   },
   {
