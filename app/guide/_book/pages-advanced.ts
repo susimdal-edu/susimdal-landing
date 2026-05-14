@@ -26,7 +26,7 @@ export const CHAPTERS: Chapter[] = [
   { num: 6, title: "AI 매티 활용법", subtitle: "정답이 아닌 설계의 파트너" },
   { num: 7, title: "습관 신호등", subtitle: "내 시간을 색깔로 보여줘요" },
   { num: 8, title: "진짜 변화", subtitle: "점수보다 자신감" },
-  { num: 9, title: "4가지 습관", subtitle: "선배들이 공통으로 키운 것" },
+  { num: 9, title: "2가지 습관", subtitle: "선배들이 공통으로 키운 것" },
   { num: 10, title: "미래", subtitle: "수심달이 그려준 다음 발걸음" },
 ];
 
@@ -489,23 +489,23 @@ export const PAGES: BookPage[] = [
       "점수는 결과일 뿐이에요.\n진짜 자랑할 만한 건\n포기하지 않는 끈기,\n스스로 ‘제대로 하고 있어’ 라고 말할 수 있는 확신이에요.",
   },
 
-  // ─────────── Ch 9. 4가지 습관 ───────────
+  // ─────────── Ch 9. 2가지 습관 ───────────
   {
     id: "9-1",
     chapter: 9,
-    chapterTitle: "4가지 습관",
+    chapterTitle: "2가지 습관",
     pageNumber: 1,
     layout: "cover",
     matty: M.hipster,
     eyebrow: "Chapter 9",
-    title: "선배들이 공통으로 키운 4가지 습관",
+    title: "선배들이 공통으로 키운 2가지 습관",
     body:
-      "네 명의 선배 모두 자기만의 학습 루틴을 가지고 있어요.\n그런데 그 안에 공통된 네 가지 습관이 있더라고요.\n이것만 익혀도 학습 효율이 완전히 달라져요.",
+      "네 명의 선배 모두 자기만의 학습 루틴을 가지고 있어요.\n그런데 그 안에 공통된 두 가지 습관이 있더라고요.\n이것만 익혀도 학습 효율이 완전히 달라져요.",
   },
   {
     id: "9-2",
     chapter: 9,
-    chapterTitle: "4가지 습관",
+    chapterTitle: "2가지 습관",
     pageNumber: 2,
     layout: "shot-right",
     matty: M.fortune,
@@ -523,38 +523,14 @@ export const PAGES: BookPage[] = [
   {
     id: "9-3",
     chapter: 9,
-    chapterTitle: "4가지 습관",
+    chapterTitle: "2가지 습관",
     pageNumber: 3,
     layout: "cover",
-    matty: M.begging,
-    eyebrow: "습관 ②",
-    title: "솔직하게 ‘모르겠어요’",
-    body:
-      "모른다는 사실을 인정하는 게 가장 어려워요.\n하지만 ‘모르겠어요’ 를 누르는 만큼\n매티가 여러분에게 필요한 콘텐츠를 더 잘 찾아줘요.\n**솔직함이 곧 학습량**이에요.",
-  },
-  {
-    id: "9-4",
-    chapter: 9,
-    chapterTitle: "4가지 습관",
-    pageNumber: 4,
-    layout: "cover",
     matty: M.surprised,
-    eyebrow: "습관 ③",
+    eyebrow: "습관 ②",
     title: "챌린지로 다시 풀어보기",
     body:
       "‘답 찾기’ 가 아니라 ‘식 쓰기’ 연습.\n한 번 푼 문제를 다시 푸는 건 외우는 게 아니라\n풀이의 ‘과정’을 내 것으로 만드는 일이에요.\n선배들도 챌린지 재도전을 가장 강력한 도구로 꼽았어요.",
-  },
-  {
-    id: "9-5",
-    chapter: 9,
-    chapterTitle: "4가지 습관",
-    pageNumber: 5,
-    layout: "cover",
-    matty: M.laptop,
-    eyebrow: "습관 ④",
-    title: "리셋 시간으로 자기 점검",
-    body:
-      "수업 중간 ‘리셋’ 시간을 그냥 흘려보내지 마세요.\n오늘 어떤 단원을 어떻게 풀었는지,\n어디서 막혔는지 잠깐 적어두는 것만으로\n학습 효율과 시간 관리가 확실히 좋아져요.",
   },
 
   // ─────────── Ch 10. 미래 ───────────
