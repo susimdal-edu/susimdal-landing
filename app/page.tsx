@@ -60,7 +60,7 @@ const CARDS: CardSpec[] = [
     disabled: false,
   },
   {
-    href: "/guide/advanced",
+    href: null,
     character: "/characters/matty-fortune.png",
     characterAlt: "점술 매티",
     badge: "심화",
@@ -69,8 +69,8 @@ const CARDS: CardSpec[] = [
     subtitle: "선배들이 들려주는 수심달의 진짜 가치",
     description:
       "네 명의 앰버서더 선배가 직접 겪은 변화와 학습 노하우. 색깔펜 첨삭부터 습관 신호등까지 매티가 함께 안내해요.",
-    cta: "시작하기",
-    disabled: false,
+    cta: "준비중",
+    disabled: true,
   },
 ];
 
